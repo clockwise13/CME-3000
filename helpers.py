@@ -1,14 +1,19 @@
+# -*- coding: utf-8 -*-
 import config
-from config import pygame as pygame
+from config import *
 
-pygame.init()
+# I don't like these imports here
 
-
+print __name__
 
 def displayer(res_x, res_y):
+    # White syntactic sugar (sniff, sniff, snort) // added alpha value
+    WHITE = (255, 255, 255, 1)
     # initiates a Surface display object with a given resolution
     DISPLAY = pygame.display.set_mode((res_x, res_y))
     pygame.display.set_caption("Testy medyczne na Twojej Starej")
+
+    DISPLAY.fill(WHITE)
     return DISPLAY
 
 def blitter(display_name, object_name, position):
@@ -16,7 +21,24 @@ def blitter(display_name, object_name, position):
     pix = pygame.image.load(object_name + ".png")
     display_name.blit(pix, position)
     pygame.display.update()
-    print 'displaying'
+
+def quitter():
+    # handy way to execute a quit sequence without rewriting shit
+    pygame.quit()
+    sys.exit()
+
+def spawner(class_type, init_values):
+    obj = class_type(init_values)
+    config.Head_list.append(obj)
+    for lst in config.Object_list:
+            for obj_name in lst:
+                print "Pizda nad głową!"
+            #   print len(config.Object_list)
+            #   print
+            #   print len(lst)
+    else:
+        print "Nic"
+
 
 def collider():
     pass

@@ -1,24 +1,25 @@
 # classes for Corpo Master 3000
 import config
-from config import random as random
-from config import pygame as pygame
-from config import helpers as helpers 
+from config import *
 
 class Peon():
     # single Peon init at pos; try with a random pos tuple
     def __init__(self, position):
         self.status = True
         self.pos = position
-        self.vec = random.choice((1,-1))
+        self.vec = random.choice((1,-1)) # does this randomly choose the direction the peon's facing...?
     def Peon_blit(self, position, display_name):
-        helpers.displayer(config.res_x, config.res_y)
-        helpers.blitter(display_name, "Peon", position)
-
+        config.helpers.displayer(config.res_x, config.res_y)
+        config.helpers.blitter(display_name, "Peon", position)
 
 class Head():
-    # here does the code lie
-    pass
-
+    def __init__(self, position):
+        self.status = True
+        self.pos = position
+    def Head_blit(self, position, display_name):
+        config.helpers.displayer(config.res_x, config.res_y)
+        config.helpers.blitter(display_name, "TheBigHead", position)
+ 
 class Projectile():
     # here does the code lie
     pass

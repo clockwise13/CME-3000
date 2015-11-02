@@ -57,13 +57,13 @@ while True: # Main Game Loop.
 
 # Another question to self: How do I refer to "position" in the class / object?
 
-    Chuj = config.classes.Head((None, None))
-    Chuj.Head_blit((headx, heady), DISPLAY)
+    Head = config.classes.Head((None, None))
+    Head.Head_blit((headx, heady), DISPLAY)
 
-    spawner(config.classes.Head, ((headx, heady), (None, None)))
+#    spawner(config.classes.Head, ((headx, heady), (None, None)))
 
-    Pizda = config.classes.Peon((None, None))
-    Pizda.Peon_blit((peonx, peony), DISPLAY)
+    Peon = config.classes.Peon((None, None))
+    Peon.Peon_blit((peonx, peony), DISPLAY)
     
     if head_direction == 'right':
         headx += 10

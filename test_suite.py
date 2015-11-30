@@ -62,8 +62,19 @@ while True: # Main Game Loop.
 
 #    spawner(config.classes.Head, ((headx, heady), (None, None)))
 
-    Peon = config.classes.Peon((None, None))
-    Peon.Peon_blit((peonx, peony), DISPLAY)
+    """Working on a consistent spawner that creates instances of stuff and a blitter that
+    goes through all of the stuff in the Object_list and blits the fuck out of that"""
+    
+    while len(config.Peon_list) < 10:
+        # counts Peon instances and creates an instance of Peon if count < 10
+        Peon = config.classes.Peon((None, None))
+    for container in Object_list:
+        for thing in container:
+            if thing.status == True:
+                # go through the list of objects in Object_list and blits everything
+                random_offset = config.random.randrange(-(res_y/2), res_y /2) # random offset for testing purposes - please delete after having your fun with it
+                thing.Peon_blit((peonx + random_offset, peony + random_offset), DISPLAY)
+    print len(config.Peon_list)
     
     if head_direction == 'right':
         headx += 10

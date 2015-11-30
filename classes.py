@@ -7,7 +7,8 @@ class Peon():
     def __init__(self, position):
         self.status = True
         self.pos = position
-        self.vec = random.choice((1,-1)) # does this randomly choose the direction the peon's facing...?
+        self.vec = random.choice((1,-1))
+        config.Peon_list.append(self)
     def Peon_blit(self, position, display_name):
         config.helpers.displayer(config.res_x, config.res_y)
         config.helpers.blitter(display_name, "Peon", position)

@@ -72,8 +72,9 @@ while True: # Main Game Loop.
         for thing in container:
             if thing.status == True:
                 # go through the list of objects in Object_list and blits everything
-                random_offset = config.random.randrange(-(res_y/2), res_y /2) # random offset for testing purposes - please delete after having your fun with it
-                thing.Peon_blit((peonx + random_offset, peony + random_offset), DISPLAY)
+                #random_offset = config.random.randrange(-(res_y/2), res_y /2) # random offset for testing purposes - please delete after having your fun with it
+                #thing.Peon_blit((peonx + random_offset, peony + random_offset), DISPLAY)
+                pass
     print len(config.Peon_list)
     
     if head_direction == 'right':

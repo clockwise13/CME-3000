@@ -2,23 +2,17 @@
 import config
 from config import *
 
-# I don't like these imports here
-
-print __name__
-
-def displayer(res_x, res_y):
+def displayer():
     # White syntactic sugar (sniff, sniff, snort) // added alpha value
     WHITE = (255, 255, 255, 1)
-    # initiates a Surface display object with a given resolution
-    DISPLAY = pygame.display.set_mode((res_x, res_y))
+    # initiates a Surface display object with a resolution defined in config as res_x, res_y
+    DISPLAY = pygame.display.set_mode((config.res_x, config.res_y))
     pygame.display.set_caption("Testy medyczne na Twojej Starej")
-
-    DISPLAY.fill(WHITE)
     return DISPLAY
 
-def blitter(display_name, object_name, position):
-    # takes object's name and uses it to build a filename, then blit's at pos
-    pix = pygame.image.load(object_name + ".png")
+def blitter(display_name, image, position):
+    # takes object's image parameter and blits it to the display
+    pix = pygame.image.load(image)
     display_name.blit(pix, position)
     pygame.display.update()
 

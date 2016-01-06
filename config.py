@@ -17,9 +17,14 @@ from helpers import *
 res_x = 1280
 res_y = 720
 
-Peon_list = []
-Head_list = []
-Object_list = [Peon_list, Head_list]
+#containers for sprite objects using the sprite.Group() class
+
+Peon_list = pygame.sprite.Group()
+Head_list = pygame.sprite.Group()
+Object_list = pygame.sprite.Group()
+
+# dummy counter for dummy counting
+
 dummy_counter = 0
 
 # INITS

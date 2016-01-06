@@ -12,8 +12,8 @@ def displayer():
 
 def blitter(display_name, image, position):
     # takes object's image parameter and blits it to the display
-    pix = pygame.image.load(image)
-    display_name.blit(pix, position)
+    # note: the pix variable depreciated in favor of image loading in the Sprite class definitions
+    display_name.blit(image, position)
     pygame.display.update()
 
 def quitter():
@@ -34,8 +34,9 @@ def spawner(class_type, init_values):
         print "Nic"
 
 
-def collider():
-    pass
+def collider(test_subject):
+    # uses the default pygame Sprite collision method
+    collisions_list = pygame.sprite.spritecollide(test_subject, config.Peon_list, True)
 
 def mover(pos, vector):
     pass
@@ -60,4 +61,3 @@ def saver():
 def loader():
     pass
     # return load
-

@@ -7,11 +7,13 @@ class Peon(config.pygame.sprite.Sprite):
     # class rewritten to be a derivate of the pygame.sprite class template
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
+        
+        '''Old code for movement here:
         # randomly assign a position to the Peon instance;
-        #might be replaced by a later spawner on a group level
+        #might be replaced by a later spawner on a group level        
         self.pos = ((config.random.randrange(10, config.res_x),
                      config.random.randrange(10, config.res_y /2)))
-        self.direction = "R"
+        self.direction = "R"'''
         
         #right and left facing walking frames
         self.walking_frames_l = []
@@ -44,11 +46,29 @@ class Peon(config.pygame.sprite.Sprite):
         self.add(config.Peon_list)
 
     def update(self):
-        random_offset = config.random.randrange(1, config.res_x/50)
-        #self.rect.x = self.pos[0] + random_offset * self.vec
-        self.vec = random.choice((1,-1))
-        self.rect.move_ip(random_offset * self.vec, 0)
 
+        '''Old code here:        
+        random_offset = config.random.randrange(1, config.res_x/50)
+        self.vec = random.choice((1,-1))
+        self.rect.move_ip(random_offset * self.vec, 0)'''
+        
+        self.rect.x += self.change_x
+        pos = self.rect.x + self.level.world_shift #This needs to change!
+        if self.direction == "R":
+            frame = (pos // 30) % len(self.walking_frames_r)
+            self.image = self.walking_frames_r[frame]
+        else:
+            frame = (pos // 30) % len(self.walking_frames_l)
+            self.image = self.walking_frames_l[frame]
+            
+    def direction(self):
+        if self.rect.x = res_x:
+            self.direction = "R"
+            self.change_x = 6
+        elif self.rect.x = 0:
+            self.direction = "L"
+            self.change_X = -6
+        
 class Head(config.pygame.sprite.Sprite):
     def __init__(self):
         super(Head, self).__init__()

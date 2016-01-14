@@ -22,7 +22,6 @@ WHITE    = ( 255, 255, 255)
 BLUE     = (   0,   0, 255)
 
 #containers for sprite objects using the sprite.Group() class
-
 Peon_list = pygame.sprite.Group()
 Head_list = pygame.sprite.Group()
 Object_list = pygame.sprite.Group()

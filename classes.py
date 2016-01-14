@@ -2,7 +2,16 @@
 import config
 from config import *
 
-class Peon(config.pygame.sprite.Sprite):
+class SpriteSheet(object):
+    def __init__(self, file_name):
+        self.sprite_sheet = pygame.image.load(file_name).convert()
+    def get_image(self, x, y, width, height):
+        image = pygame.Surface([width, height]).convert()
+        image.blit(self.sprite_sheet, (0, 0), (x, y, width, height))
+        image.set_colorkey(config.BLACK)
+        return image
+
+class Peon(pygame.sprite.Sprite):
     # single Peon init at pos; try with a random pos tuple
     # class rewritten to be a derivate of the pygame.sprite class template
     def __init__(self):
@@ -15,11 +24,18 @@ class Peon(config.pygame.sprite.Sprite):
                      config.random.randrange(10, config.res_y /2)))
         self.direction = "R"'''
         
-        #right and left facing walking frames
+        #Speed vectors
+        self.change_x = 0
+        self.change_y = 0
+        
+        #Right and left facing walking frames
         self.walking_frames_l = []
         self.walking_frames_r = []
 
-        #loading the sprite sheet
+        #Player direction
+        self.direction = "R"
+
+        #Loading the sprite sheet
         sprite_sheet = SpriteSheet("Peon_Animated.png")
 
         #Appending to the right-facing walking frames
@@ -44,6 +60,8 @@ class Peon(config.pygame.sprite.Sprite):
 
         # add instance of Peon object to Peon_list Sprite group
         self.add(config.Peon_list)
+        self.add(config.Object_list)
+
 
     def update(self):
 
@@ -53,7 +71,7 @@ class Peon(config.pygame.sprite.Sprite):
         self.rect.move_ip(random_offset * self.vec, 0)'''
         
         self.rect.x += self.change_x
-        pos = self.rect.x + self.level.world_shift #This needs to change!
+        pos = self.rect.x + config.res_x
         if self.direction == "R":
             frame = (pos // 30) % len(self.walking_frames_r)
             self.image = self.walking_frames_r[frame]
@@ -61,13 +79,8 @@ class Peon(config.pygame.sprite.Sprite):
             frame = (pos // 30) % len(self.walking_frames_l)
             self.image = self.walking_frames_l[frame]
             
-    def direction(self):
-        if self.rect.x = res_x:
-            self.direction = "R"
-            self.change_x = 6
-        elif self.rect.x = 0:
-            self.direction = "L"
-            self.change_X = -6
+        self.rect.y += self.change_y
+        self.change_y = 0
         
 class Head(config.pygame.sprite.Sprite):
     def __init__(self):
@@ -89,15 +102,6 @@ class Head(config.pygame.sprite.Sprite):
         else:
             pass
         self.rect.move_ip(0, random_offset * self.vec)
-
-class SpriteSheet(object):
-    def __init__(selfself, file_name):
-        self.sprite_sheet = pygame.image.load(file_name).convert()
-    def get_image(self, x, y, width, height):
-        image = pygame.Surface([width, height]).convert()
-        image.blit(self.sprite_sheet, (0, 0), (x, y, width, height))
-        image.set_colorkey(constants.BLACK)
-        return image
 
 class Projectile():
     # here does the code lie

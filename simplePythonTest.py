@@ -1,35 +1,46 @@
 import config
 from config import *
 
-EKRAN = config.helpers.displayer()
-EKRAN.fill((255, 255, 255))
+EKRAN = helpers.displayer()
+#EKRAN.fill((255, 255, 255))
+
+
+Peon = classes.Peon()
+#Head = classes.Head()
+
+
+
+Peon.rect.x = res_x / 2
+Peon.rect.y = res_y / 2
+
 fpsClock = pygame.time.Clock()
-h = classes.Head()
-FPS = 30
+FPS = 60
 
 while __name__ == '__main__':
     for event in config.pygame.event.get():
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 config.quitter()
-            elif event.key == K_SPACE:
-                EKRAN.fill((255, 255, 255))
-            else:
-                p = classes.Peon()
         elif event.type == QUIT:
             # added this in to allow for "external" closing of the game
             config.quitter()
 
-    EKRAN.fill((255, 255, 255))
-    config.helpers.collider(h) # a call to the collider function to check for Head vs. Peons collisions
+    Peon_list.update()
+    #Head_list.update()
+    
+    if Peon.rect.right >= res_x:
+        Peon.direction == "L"
+        Peon.change_x = -6
+        
+    if Peon.rect.left <= 0:
+        Peon.direction == "R"
+        Peon.change_x = 6
 
-    # updaters and draw calls for Peon and Head lists; to be depraciated in favor of a snazzy loop or list comprehension handler
+    #EKRAN.fill((255, 255, 255))
 
-    config.Head_list.update()
-    config.Peon_list.update()
-    config.Head_list.draw(EKRAN)
-    config.Peon_list.draw(EKRAN)
+    Peon_list.draw(EKRAN)
+    #Head_list.draw(EKRAN)
 
     # finalise the loop
-    config.pygame.display.update()
     fpsClock.tick(FPS)
+    pygame.display.flip()

@@ -22,7 +22,7 @@ image = "Peon"
 FPS = 60 # I was fucking around with different FPS to get different animation speeds
 fpsClock = pygame.time.Clock()
 
-DISPLAY = config.displayer(config.res_x, config.res_y)
+DISPLAY = config.displayer()
 
 '''
 I am experimenting below primarily with the horizontal movement and blitting.

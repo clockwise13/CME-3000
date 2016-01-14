@@ -7,12 +7,39 @@ class Peon(config.pygame.sprite.Sprite):
     # class rewritten to be a derivate of the pygame.sprite class template
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        # randomly assign a position to the Peon instance; might be replaced by a later spawner on a group level
+        # randomly assign a position to the Peon instance;
+        #might be replaced by a later spawner on a group level
         self.pos = ((config.random.randrange(10, config.res_x),
                      config.random.randrange(10, config.res_y /2)))
-        self.image = config.pygame.image.load("Peon_Animated.png")
+        self.direction = "R"
+        
+        #right and left facing walking frames
+        self.walking_frames_l = []
+        self.walking_frames_r = []
+
+        #loading the sprite sheet
+        sprite_sheet = SpriteSheet("Peon_Animated.png")
+
+        #Appending to the right-facing walking frames
+        #Parameters for .get_image: (X, Y, WIDTH, HEIGHT)
+        image = sprite_sheet.get_image(0, 0, 25, 72)
+        self.walking_frames_r.append(image)
+        image = sprite_sheet.get_image(25, 0, 25, 72)
+        self.walking_frames_r.append(image)
+        
+        #Flipping right-facing walking frames
+        #And appending them to left-facing walking frames
+        image = sprite_sheet.get_image(0, 0, 25, 72)
+        image = pygame.transform.flip(image, True, False)
+        self.walking_frames_l.append(image)
+        image = sprite_sheet.get_image(25, 0, 25, 72)
+        image = pygame.transform.flip(image, True, False)
+        self.walking_frames_l.append(image)
+
+        self.image = self.walking_frames_r[0]
         self.rect = self.image.get_rect()
-        self.rect.center = self.pos
+        
+
         # add instance of Peon object to Peon_list Sprite group
         self.add(config.Peon_list)
 

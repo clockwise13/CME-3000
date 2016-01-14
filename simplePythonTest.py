@@ -1,23 +1,32 @@
 import config
 from config import *
 
-EKRAN = helpers.displayer()
-#EKRAN.fill((255, 255, 255))
-
-
-Peon = classes.Peon()
-#Head = classes.Head()
-
-
-
-Peon.rect.x = res_x / 2
-Peon.rect.y = res_y / 2
-
-fpsClock = pygame.time.Clock()
-FPS = 60
-
 while __name__ == '__main__':
+
+    EKRAN = helpers.displayer()
+    EKRAN.fill(config.WHITE)
+
+    peon = classes.Peon()
+    #Head = classes.Head()
+
+    peon.rect.x = res_x / 2
+    peon.rect.y = res_y / 2
+
+    fpsClock = pygame.time.Clock()
+    FPS = 60
+    
     for event in config.pygame.event.get():
+        
+        #moving
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                peon.go_left()
+            if event.key == pygame.K_RIGHT:
+                peon.go_right()
+        
+        #stopping
+        
+             
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 config.quitter()
@@ -28,15 +37,16 @@ while __name__ == '__main__':
     Peon_list.update()
     #Head_list.update()
     
-    if Peon.rect.right >= res_x:
-        Peon.direction == "L"
-        Peon.change_x = -6
+    ''' Attempts at automatic movement:
+    if peon.rect.right >= res_x:
+        peon.direction == "L"
+        peon.change_x = -6
         
-    if Peon.rect.left <= 0:
-        Peon.direction == "R"
-        Peon.change_x = 6
+    if peon.rect.left <= 0:
+        peon.direction == "R"
+        peon.change_x = 6
+    '''
 
-    #EKRAN.fill((255, 255, 255))
 
     Peon_list.draw(EKRAN)
     #Head_list.draw(EKRAN)

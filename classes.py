@@ -64,14 +64,10 @@ class Peon(pygame.sprite.Sprite):
 
 
     def update(self):
-
-        '''Old code here:        
-        random_offset = config.random.randrange(1, config.res_x/50)
-        self.vec = random.choice((1,-1))
-        self.rect.move_ip(random_offset * self.vec, 0)'''
         
+        #Move left and right
         self.rect.x += self.change_x
-        pos = self.rect.x + config.res_x
+        pos = self.rect.x
         if self.direction == "R":
             frame = (pos // 30) % len(self.walking_frames_r)
             self.image = self.walking_frames_r[frame]
@@ -79,8 +75,18 @@ class Peon(pygame.sprite.Sprite):
             frame = (pos // 30) % len(self.walking_frames_l)
             self.image = self.walking_frames_l[frame]
             
-        self.rect.y += self.change_y
-        self.change_y = 0
+        #Moving controlled by player
+    def go_left(self):
+            self.change_x = -6
+            self.direction = "L"
+        
+    def go_right(self):
+            self.change_x = 6
+            self.direction = "R"
+            
+    def stop(self):
+            self.change_x = 0
+        
         
 class Head(config.pygame.sprite.Sprite):
     def __init__(self):

@@ -24,9 +24,7 @@ while __name__ == '__main__':
             if event.key == pygame.K_RIGHT:
                 peon.go_right()
         
-        #stopping
-        
-             
+        #stopping          
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 config.quitter()

@@ -8,7 +8,8 @@ class SpriteSheet(object):
     def get_image(self, x, y, width, height):
         image = pygame.Surface([width, height]).convert()
         image.blit(self.sprite_sheet, (0, 0), (x, y, width, height))
-        image.set_colorkey(config.BLACK)
+        #convert alpha command
+        image.set_colorkey(config.BLACK) # (0, 0, 0, XXX)
         return image
 
 class Peon(pygame.sprite.Sprite):

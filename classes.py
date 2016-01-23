@@ -17,18 +17,18 @@ class Peon(pygame.sprite.Sprite):
     # class rewritten to be a derivate of the pygame.sprite class template
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        
+
         '''Old code for movement here:
         # randomly assign a position to the Peon instance;
-        #might be replaced by a later spawner on a group level        
+        #might be replaced by a later spawner on a group level
         self.pos = ((config.random.randrange(10, config.res_x),
                      config.random.randrange(10, config.res_y /2)))
         self.direction = "R"'''
-        
+
         #Speed vectors
         self.change_x = 0
         self.change_y = 0
-        
+
         #Right and left facing walking frames
         self.walking_frames_l = []
         self.walking_frames_r = []
@@ -45,7 +45,7 @@ class Peon(pygame.sprite.Sprite):
         self.walking_frames_r.append(image)
         image = sprite_sheet.get_image(25, 0, 25, 72)
         self.walking_frames_r.append(image)
-        
+
         #Flipping right-facing walking frames
         #And appending them to left-facing walking frames
         image = sprite_sheet.get_image(0, 0, 25, 72)
@@ -57,7 +57,7 @@ class Peon(pygame.sprite.Sprite):
 
         self.image = self.walking_frames_r[0]
         self.rect = self.image.get_rect()
-        
+
 
         # add instance of Peon object to Peon_list Sprite group
         self.add(config.Peon_list)
@@ -65,7 +65,6 @@ class Peon(pygame.sprite.Sprite):
 
 
     def update(self):
-        
         #Move left and right
         self.rect.x += self.change_x
         pos = self.rect.x
@@ -75,20 +74,20 @@ class Peon(pygame.sprite.Sprite):
         else:
             frame = (pos // 30) % len(self.walking_frames_l)
             self.image = self.walking_frames_l[frame]
-            
+
         #Moving controlled by player
     def go_left(self):
             self.change_x = -6
             self.direction = "L"
-        
+
     def go_right(self):
             self.change_x = 6
             self.direction = "R"
-            
+
     def stop(self):
             self.change_x = 0
-        
-        
+
+
 class Head(config.pygame.sprite.Sprite):
     def __init__(self):
         super(Head, self).__init__()

@@ -1,11 +1,9 @@
 import config
 from config import *
 
-while __name__ == '__main__':
-
+def main():
+    quit_flag = False
     EKRAN = helpers.displayer()
-    EKRAN.fill(config.WHITE)
-
     peon = classes.Peon()
     #Head = classes.Head()
 
@@ -14,41 +12,33 @@ while __name__ == '__main__':
 
     fpsClock = pygame.time.Clock()
     FPS = 60
-    
-    for event in config.pygame.event.get():
-        
-        #moving
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                peon.go_left()
-            if event.key == pygame.K_RIGHT:
-                peon.go_right()
-        
-        #stopping          
-        if event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
+    while quit_flag == False:
+        EKRAN.fill(config.WHITE)
+        for event in config.pygame.event.get():
+            # simple event handler for testing
+            if event.type == KEYDOWN:
+                if event.key == K_LEFT:
+                    peon.go_left()
+                elif event.key == K_RIGHT:
+                    peon.go_right()
+                elif event.key == K_p:
+                    peon = classes.Peon()
+                    peon.rect.x = res_x / 2
+                    peon.rect.y = res_y / 2
+                elif event.key == K_ESCAPE:
+                    config.quitter()
+            elif event.type == QUIT:
+                # added this in to allow for "external" closing of the game
                 config.quitter()
-        elif event.type == QUIT:
-            # added this in to allow for "external" closing of the game
-            config.quitter()
 
-    Peon_list.update()
-    #Head_list.update()
-    
-    ''' Attempts at automatic movement:
-    if peon.rect.right >= res_x:
-        peon.direction == "L"
-        peon.change_x = -6
-        
-    if peon.rect.left <= 0:
-        peon.direction == "R"
-        peon.change_x = 6
-    '''
+        Peon_list.update()
+        #Head_list.update()
+        Peon_list.draw(EKRAN)
+        #Head_list.draw(EKRAN)
 
+        # finalise the loop
+        fpsClock.tick(FPS)
+        pygame.display.flip()
 
-    Peon_list.draw(EKRAN)
-    #Head_list.draw(EKRAN)
-
-    # finalise the loop
-    fpsClock.tick(FPS)
-    pygame.display.flip()
+if __name__ == '__main__':
+    main()

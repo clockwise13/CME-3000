@@ -4,11 +4,12 @@ from config import *
 def main():
     quit_flag = False
     EKRAN = helpers.displayer()
-    peon = classes.Peon()
+    spawner = classes.Spawn("Peon", (config.res_x/3, config.res_y/2), 7)
+    spawner.activate()
     #Head = classes.Head()
 
-    peon.rect.x = res_x / 2
-    peon.rect.y = res_y / 2
+    #peon.rect.x = res_x / 2
+    #peon.rect.y = res_y / 2
 
     fpsClock = pygame.time.Clock()
     FPS = 60
@@ -18,13 +19,13 @@ def main():
             # simple event handler for testing
             if event.type == KEYDOWN:
                 if event.key == K_LEFT:
-                    peon.go_left()
+                    obj.go_left()
                 elif event.key == K_RIGHT:
-                    peon.go_right()
+                    obj.go_right()
                 elif event.key == K_p:
-                    peon = classes.Peon()
-                    peon.rect.x = res_x / 2
-                    peon.rect.y = res_y / 2
+                    obj = classes.Peon()
+                    obj.rect.x = res_x / 2
+                    obj.rect.y = res_y / 2
                 elif event.key == K_ESCAPE:
                     config.quitter()
             elif event.type == QUIT:
@@ -38,6 +39,7 @@ def main():
 
         # finalise the loop
         fpsClock.tick(FPS)
+        spawner.spawning()
         pygame.display.flip()
 
 if __name__ == '__main__':

@@ -112,3 +112,68 @@ class Head(config.pygame.sprite.Sprite):
 class Projectile():
     # here does the code lie
     pass
+
+class Spawn():
+    """ a general spawner class: the idea is to place this in a level and make it spawn X by using X's internal methods; requires method consistency across classes obviously duh!"""
+    def __init__(self, object_to_spawn, position_to_spawn, spawn_interval):
+        self.type = object_to_spawn
+        self.pos = position_to_spawn
+        self.interval = spawn_interval
+
+        # flag for turning a spawner on and off
+        self.active = False
+
+    def activate(self):
+        # turn spawner on
+        self.active = True
+        print "Spawner active"
+
+    def deactivate(self):
+        #turn spawner off
+        self.active = False
+        print "Spawner deactivated"
+
+    def spawning(self):
+        while self.active == True:
+            if random.randrange(0, 1000000) <= 1 and len(config.Peon_list) < 50:
+                # this will be the tricky part of doing timed spawn events; use Thread.Threading maybe?
+                if self.type == "Peon":
+                    # spawn the critter
+                    obj = Peon()
+                    obj.rect.x = random.randrange(50, config.res_x)
+                    obj.rect.y = random.randrange(100, config.res_y)
+                    return
+                else:
+                    pass
+            elif len(config.Peon_list) >= 50:
+                self.deactivate()
+                return
+
+class Level_creator():
+    def __init__(self, background, object_dict, music):
+        """" all of the components of a level are to be placed below; this class is only for the purposes of level creation in the levelPickler module; any name assignment and name persistency issues should be handled by a separate class and the use of unpickling thr pre-prepared levels"""
+        # set the background of the level to an image
+        self.background = pygame.image.load(background).convert()
+
+        # use an object dictionary to organize the objects
+        self.object_dict = object_dict
+
+        # list of spawners represented by tuples of arguments to be passed into the Spawn class
+        self.spawners = []
+
+        # music loader
+        self.music = pygame.mixer.Sound(music)
+
+        # unpack the dictionary with the object lists and place them in the level
+        """ This is the tricky part: I need to find a way to make a series of assignments that will place everything where it needs to be (using tuples to indicate pos); this will most likely demand some disciplined formatting of the inputs for the level construction"""
+        for key in self.object_dict:
+            if key == Peon:
+                pass
+            elif key == Head:
+                pass
+            elif key == Projectile:
+                pass
+            elif key == Spawn:
+                self.spawners = self.object_dict[Spawn]
+            else:
+                pass

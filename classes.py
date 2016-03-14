@@ -87,7 +87,6 @@ class Peon(pygame.sprite.Sprite):
     def stop(self):
             self.change_x = 0
 
-
 class Head(config.pygame.sprite.Sprite):
     def __init__(self):
         super(Head, self).__init__()
@@ -115,10 +114,15 @@ class Projectile():
 
 class Spawn():
     """ a general spawner class: the idea is to place this in a level and make it spawn X by using X's internal methods; requires method consistency across classes obviously duh!"""
-    def __init__(self, object_to_spawn, position_to_spawn, spawn_interval):
+    def __init__(self, object_to_spawn, position_to_spawn, spawn_interval, limiter):
         self.type = object_to_spawn
         self.pos = position_to_spawn
+
+        # this is the end of the range for the random generator, tweak to make spawning less/more frequent
         self.interval = spawn_interval
+
+        #the limiter deactivates the spawner after n critters are spawned in; usefull for un-clusterfucking the spawn procedure
+        self.limiter = limiter
 
         # flag for turning a spawner on and off
         self.active = False
@@ -134,18 +138,25 @@ class Spawn():
         print "Spawner deactivated"
 
     def spawning(self):
-        while self.active == True:
-            if random.randrange(0, 1000000) <= 1 and len(config.Peon_list) < 50:
-                # this will be the tricky part of doing timed spawn events; use Thread.Threading maybe?
+        if self.active == True:
+            if random.randrange(0, self.interval) <= 1 and len(config.Peon_list) < self.limiter or self.limiter == -1:
+                """ Random number generation based spawning: with every program loop, if the spawning method is called it will have a spawn_interval/100 chance of creating an object. Use -1 value for unlimited spawning and resulting clusterfuck."""
+
                 if self.type == "Peon":
                     # spawn the critter
                     obj = Peon()
-                    obj.rect.x = random.randrange(50, config.res_x)
-                    obj.rect.y = random.randrange(100, config.res_y)
+                    obj.rect.x = self.pos[0]
+                    obj.rect.y = self.pos[1]
+                    # randomly assign an initial vector of movement - move this to a more sensible place
+                    movin = random.choice(("left", "right"))
+                    if movin == "left":
+                        obj.go_left()
+                    else:
+                        obj.go_right()
                     return
                 else:
                     pass
-            elif len(config.Peon_list) >= 50:
+            elif len(config.Peon_list) >= self.limiter:
                 self.deactivate()
                 return
 

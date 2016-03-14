@@ -4,9 +4,10 @@ import sys
 import pygame
 import math
 import random
+import pickle
+import threading
 import classes
 import helpers
-import pickle
 
 from pygame.locals import *
 from helpers import *

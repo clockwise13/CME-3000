@@ -161,13 +161,16 @@ class Spawn():
                 return
 
 class Level_creator():
-    def __init__(self, background, object_dict, music):
+    def __init__(self, misc, objects, GUI, music):
         """" all of the components of a level are to be placed below; this class is only for the purposes of level creation in the levelPickler module; any name assignment and name persistency issues should be handled by a separate class and the use of unpickling thr pre-prepared levels"""
         # set the background of the level to an image
-        self.background = pygame.image.load(background).convert()
+        Misc_dict = misc
+        BgImage = Misc_dict['Background']
+        self.background = BgImage
+        #self.background = pygame.image.load(background).convert()
 
         # use an object dictionary to organize the objects
-        self.object_dict = object_dict
+        self.object_dict = objects
 
         # list of spawners represented by tuples of arguments to be passed into the Spawn class
         self.spawners = []
@@ -188,3 +191,31 @@ class Level_creator():
                 self.spawners = self.object_dict[Spawn]
             else:
                 pass
+
+class Event:
+    "A class meant to handle I/O events in the game, possibly other ones as well"
+    def __init__(self):
+        mousex = 0 # x coordinate of the mouse event
+        mousey = 0 # y coordinate of the mouse event
+        for event in pygame.event.get():
+            if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
+                config.quitter()
+
+        # mouse movement and clicking handler
+
+            elif event.type == MOUSEMOTION:
+                mousex, mousey = event.pos
+            elif event.type == MOUSEBUTTONDOWN:
+                mousex, mousey = event.pos
+                return event.pos # this might be wrong, as it will exit the loop
+
+class GUI_BUTTON(pygame.sprite.Sprite):
+    "Might be a good idea to use class inheritance for this - make a GUI class as template for interactive graphic objects for the interface and then specify the details for every group (buttons, sliders, meters etc.)"
+    def __init__(self, image, pos, func):
+        pygame.sprite.Sprite.__init__(self)
+        sprite_sheet = SpriteSheet(image)
+        self.function = func
+        self.image = sprite_sheet.get_image(0, 0, 279, 274)
+        self.rect = self.image.get_rect()
+        self.pos = pos
+        self.add(config.GUI_list)

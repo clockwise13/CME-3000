@@ -197,16 +197,19 @@ class Event:
     def __init__(self):
         mousex = 0 # x coordinate of the mouse event
         mousey = 0 # y coordinate of the mouse event
-        for event in pygame.event.get():
-            if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
+
+    def get_events(self):
+        for event in config.pygame.event.get():
+            if event.type == config.pygame.QUIT or (event.type == config.pygame.KEYUP and event.key == config.pygame.K_ESCAPE):
                 config.quitter()
 
-        # mouse movement and clicking handler
+                # mouse movement and clicking handler
 
-            elif event.type == MOUSEMOTION:
+            elif event.type == config.pygame.MOUSEMOTION:
                 mousex, mousey = event.pos
-            elif event.type == MOUSEBUTTONDOWN:
+            elif event.type == config.pygame.MOUSEBUTTONDOWN:
                 mousex, mousey = event.pos
+                print event.pos # debug build line, testing purposes only
                 return event.pos # this might be wrong, as it will exit the loop
 
 class GUI_BUTTON(pygame.sprite.Sprite):
@@ -219,3 +222,8 @@ class GUI_BUTTON(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.pos = pos
         self.add(config.GUI_list)
+
+    def clicked():
+        if clicked == True:
+            self.function()
+        pass

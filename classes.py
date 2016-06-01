@@ -161,7 +161,7 @@ class Spawn():
                 return
 
 class Level_creator():
-    def __init__(self, misc, objects, GUI, music):
+    def __init__(self, misc, objects, music):
         """" all of the components of a level are to be placed below; this class is only for the purposes of level creation in the levelPickler module; any name assignment and name persistency issues should be handled by a separate class and the use of unpickling thr pre-prepared levels"""
         # set the background of the level to an image
         Misc_dict = misc
@@ -180,50 +180,56 @@ class Level_creator():
 
         # unpack the dictionary with the object lists and place them in the level
         """ This is the tricky part: I need to find a way to make a series of assignments that will place everything where it needs to be (using tuples to indicate pos); this will most likely demand some disciplined formatting of the inputs for the level construction"""
-        for key in self.object_dict:
-            if key == Peon:
-                pass
-            elif key == Head:
-                pass
-            elif key == Projectile:
-                pass
-            elif key == Spawn:
-                self.spawners = self.object_dict[Spawn]
-            else:
-                pass
 
-class Event:
+class Event():
     "A class meant to handle I/O events in the game, possibly other ones as well"
     def __init__(self):
         mousex = 0 # x coordinate of the mouse event
         mousey = 0 # y coordinate of the mouse event
+        self.event = []
 
     def get_events(self):
-        for event in config.pygame.event.get():
-            if event.type == config.pygame.QUIT or (event.type == config.pygame.KEYUP and event.key == config.pygame.K_ESCAPE):
+        event_list = config.pygame.event.get()
+        for event in event_list:
+            """If the event getter will be invoked every frame, won't it lag down the input? TEST THIS"""
+            self.event = event
+            if event.type == config.pygame.QUIT or \
+            (event.type == config.pygame.KEYUP and \
+            event.key == config.pygame.K_ESCAPE):
                 config.quitter()
 
                 # mouse movement and clicking handler
 
             elif event.type == config.pygame.MOUSEMOTION:
                 mousex, mousey = event.pos
+                return event
             elif event.type == config.pygame.MOUSEBUTTONDOWN:
                 mousex, mousey = event.pos
-                print event.pos # debug build line, testing purposes only
-                return event.pos # this might be wrong, as it will exit the loop
+                return event
+            else:
+                return None
 
 class GUI_BUTTON(pygame.sprite.Sprite):
-    "Might be a good idea to use class inheritance for this - make a GUI class as template for interactive graphic objects for the interface and then specify the details for every group (buttons, sliders, meters etc.)"
-    def __init__(self, image, pos, func):
+    """Might be a good idea to use class inheritance for this - make a GUI class as template for interactive
+    graphic objects for the interface and then specify the details for every group (buttons, sliders, meters etc.)
+    IMPORTANT: pass the variable used for creating the event handler to the function, don't create a new one!"""
+    def __init__(self, image, pos, func, event_handler_instance):
         pygame.sprite.Sprite.__init__(self)
         sprite_sheet = SpriteSheet(image)
+        self.pos = pos
         self.function = func
+        self.event_handler = event_handler_instance
         self.image = sprite_sheet.get_image(0, 0, 279, 274)
         self.rect = self.image.get_rect()
-        self.pos = pos
+        self.rect.center = self.pos
         self.add(config.GUI_list)
 
-    def clicked():
-        if clicked == True:
+    def update(self):
+        self.event_handler.get_events()
+
+        # check for mouse-click collsions with the button rect, the do stuff
+        if self.event_handler.event.type == config.pygame.MOUSEBUTTONDOWN and \
+        self.rect.collidepoint(self.event_handler.event.pos) == True:
             self.function()
-        pass
+        else:
+            pass

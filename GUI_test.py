@@ -13,8 +13,7 @@ def dummy_func():
 EKRAN = helpers.displayer()
 EKRAN.fill(config.WHITE)
 
-# create an instance of the GUI elements
-button = config.classes.GUI_BUTTON("happy_baton.png", (config.res_x/3, config.res_y/2), dummy_func)
+
 
 def main():
     #fps Clock
@@ -23,11 +22,14 @@ def main():
 
     # event handler for I/O
 
-    Impresario = config.classes.Event()
+    Event = config.classes.Event()
+    # create an instance of the GUI elements
+    button = config.classes.GUI_BUTTON("happy_baton.png", (config.res_x/2, config.res_y/2), dummy_func, Event)
 
     while True:
-        Impresario.get_events()
+        #Event.get_events() # at the moment the get_events function is called in the update function of objects waiting for input
         EKRAN.fill(config.WHITE)
+        GUI_list.update()
         GUI_list.draw(EKRAN)
         Clock.tick(fps)
         pygame.display.flip()

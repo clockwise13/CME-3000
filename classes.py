@@ -160,26 +160,62 @@ class Spawn():
                 self.deactivate()
                 return
 
+        def get_spawner_attr(self):
+            # a get func for easy lookup of each spawner instance's attributes
+            return (self.type, self.pos, self.interval, self.limiter, self.active)
+
 class Level_creator():
-    def __init__(self, misc, objects, music):
-        """" all of the components of a level are to be placed below; this class is only for the purposes of level creation in the levelPickler module; any name assignment and name persistency issues should be handled by a separate class and the use of unpickling thr pre-prepared levels"""
-        # set the background of the level to an image
-        Misc_dict = misc
-        BgImage = Misc_dict['Background']
-        self.background = BgImage
-        #self.background = pygame.image.load(background).convert()
+    def __init__(self, ogur):
+        """"Change of plans: create pickled instances of levels in the levelPickler module. Use this class to unpickle those
+        instances and create a level out of them."""
+        new_ogur = cPickle.load(ogur)
+        print new_ogur # debug print
 
-        # use an object dictionary to organize the objects
-        self.object_dict = objects
+        self.music = new_ogur.music # pygame.mixer.Sound(new_ogur.music) # create a Sound object
+        self.bg = new_ogur.background #load background image
+        self.spawners = new_ogur.spawners # load spawners
+        self.misc = new_ogur.misc
 
-        # list of spawners represented by tuples of arguments to be passed into the Spawn class
-        self.spawners = []
 
-        # music loader
-        self.music = pygame.mixer.Sound(music)
+    def play_it_again_sam(self):
+        print self.music
+        #self.music.play(-1) # start playing the Sound object; mixer picks the channel; -1 for infinite looping
 
-        # unpack the dictionary with the object lists and place them in the level
-        """ This is the tricky part: I need to find a way to make a series of assignments that will place everything where it needs to be (using tuples to indicate pos); this will most likely demand some disciplined formatting of the inputs for the level construction"""
+    def music_volume(self, volume):
+        self.music.set_volume(volume) # set's music volume; use float values from 0.0 to 1.0
+
+    def stop_the_music(self):
+        self.music.stop() # stops the music playback
+
+    def set_background(self):
+        # this sets the level background to be filled with every frame (?)
+        currentDisplay = pygame.display.get_surface() # retreive the currently used display surface
+        bg = pygame.image.load(self.bg) # create a Surface object from the BG image
+        currentDisplay.blit(bg) # blit the GB Surface onto the display Surface
+
+    def spawn_spawners(self):
+        # this turns on the random spawn mechanic of the Spawn class; will not yield any result if the spawners are not active!
+        for spawner in self.spawners:
+            spawner.spawning()
+
+    def activate_spawners(self):
+        for spawner in self.spawners:
+            spawner.activate()
+
+    def deactivate_spawners(self):
+        for spawner in self.spawners:
+            spawner.deactivate()
+
+    def get_spawners(self):
+        temp_spawner_table = []
+        for spawner in self.spawners:
+            spawner_lookup = spawner.get_spawner_attr()
+            temp_spawner_table.append(spawner_lookup)
+        return temp_spawner_table
+
+    def set_misc_elements(self):
+        # this will need to be filled out if we have any misc items that need special treatment
+        pass
 
 class Event():
     "A class meant to handle I/O events in the game, possibly other ones as well"
@@ -213,13 +249,14 @@ class GUI_BUTTON(pygame.sprite.Sprite):
     """Might be a good idea to use class inheritance for this - make a GUI class as template for interactive
     graphic objects for the interface and then specify the details for every group (buttons, sliders, meters etc.)
     IMPORTANT: pass the variable used for creating the event handler to the function, don't create a new one!"""
-    def __init__(self, image, pos, func, event_handler_instance):
+    def __init__(self, image, pos, func, event_handler_instance, width, height):
         pygame.sprite.Sprite.__init__(self)
         sprite_sheet = SpriteSheet(image)
         self.pos = pos
         self.function = func
         self.event_handler = event_handler_instance
-        self.image = sprite_sheet.get_image(0, 0, 279, 274)
+        self.dimension = (width, height)
+        self.image = sprite_sheet.get_image(0, 0, self.dimension[0], self.dimension[1])
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
         self.add(config.GUI_list)
@@ -227,7 +264,7 @@ class GUI_BUTTON(pygame.sprite.Sprite):
     def update(self):
         self.event_handler.get_events()
 
-        # check for mouse-click collsions with the button rect, the do stuff
+        # check for mouse-click collsions with the button rect, then do stuff
         if self.event_handler.event.type == config.pygame.MOUSEBUTTONDOWN and \
         self.rect.collidepoint(self.event_handler.event.pos) == True:
             self.function()

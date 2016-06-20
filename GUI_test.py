@@ -24,7 +24,7 @@ def main():
 
     Event = config.classes.Event()
     # create an instance of the GUI elements
-    button = config.classes.GUI_BUTTON("happy_baton.png", (config.res_x/2, config.res_y/2), dummy_func, Event)
+    button = config.classes.GUI_BUTTON("happy_baton.png", (config.res_x/2, config.res_y/2), dummy_func, Event, 279, 274)
 
     while True:
         #Event.get_events() # at the moment the get_events function is called in the update function of objects waiting for input

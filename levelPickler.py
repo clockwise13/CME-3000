@@ -1,59 +1,43 @@
-# this module will create an instance of the level class and serialize it using pickle
+import config, cPickle, os
 
-import pickle
-import config
-from config import *
+# inventory class for the first level
 
-# Creating object_dict
+class Level():
+    """This class is a template for any level you want to create. Add and modify attributes to create a level layout.
+    Remember: if you add any new attributes you will need to ammend the methods of the Level_creator class in the classes
+    module accordingly - otherwise the attributes will go unrecognized and only take up memory in the namespace. This is
+    something of a lowly level editor. Sorry, no GUI for this mofo. C programming Master Race gives a thubms up (their asses)."""
 
-Objects_dict = {'Head': None, 'Peon' = None, 'Spawner' = None}
+    def __init__(self):
+        self.objects = {}
+        self.music = '02.wav'
+        self.background = None
+        self.spawners = [config.classes.Spawn("Peon", (config.res_x/1.5, config.res_y/3), 50, 50)]
+        self.misc = {}
 
-# Creating GUI_dict for storing interface objects
+Level1 = Level()
 
-GUI_dict = {'Buttons' = None, 'Panes' = None, 'TextBoxes' = None, 'Meters' = None}
+def main():
+    # create instance to pickle
+    ogur = Level1
+    print ogur.music # debug print
+    print
+    # this is the part for the levelPickler module
+    directory = os.getcwd()
+    cwdDirList = os.listdir(directory)
+    if 'Levels' in cwdDirList:
+        print "Detected a level dir, moving on..."
+        pass
+    else:
+        outputPath = directory + "/" + "Levels"
+        os.makedirs(outputPath)
 
-# Creating miscalenous objects dictionary
+        with open(outputPath + "/" + "level1ogur.txt",'wb') as output_file:
+            cPickle.dump(ogur, output_file, protocol=-1)
 
-Misc_dict = {'Background' = None}
+    # this is the part for the level loading function of the main game module
+    """with open(r'/Levels/Level1/ogur.txt', 'rb') as input_file:
+        new_ogur = cPickle.load(input_file)"""
 
-# Creating music dictionary
-
-Music_dict = {'Ambient' = None, 'Opening' = None, 'Victory' = None}
-
-# Create objects for the object_dict
-
-#Head = classes.Head()
-#config.Head_list.append(Head)
-#config.Object_list.append(Head)
-Peon_spawner = classes.Spawn("Peon", ((config.res_x/4, config.res_y/3)), 20)
-
-# Creating GUI objects
-
-# Creating misc objects
-
-Misc_dict['Background' = config.WHITE]
-
-# Initial peons?
-"""Peon_num = 8
-for n in range(1, Peon_num, step=1):
-    p = classes.Peon()
-    config.Peon_list.append(p)
-    config.Object_list.append(p)"""
-
-# Add objects to dictionary
-
-# print statements for testing purposes
-
-print Objects_dict
-print
-
-print GUI_dict
-print
-
-print Misc_dict
-print
-
-# create level instance for pickling further down the line
-
-level_name = raw_input(prompt="Name the level you want to create: ")
-level_name = classes.Level_creator(Misc_dict, object_dict, GUI_dict, Music_dict)
+if __name__ == '__main__':
+    main()

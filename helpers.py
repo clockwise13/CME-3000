@@ -13,6 +13,12 @@ def quitter():
     pygame.quit()
     sys.exit()
 
+def new_game():
+    # open first level from a pickled file
+
+    with open(r'ogur.txt', 'rb') as input_file:
+        loadLevelOne = classes.Level_creator(input_file)
+
 def spawner(class_type, init_values):
     obj = class_type(init_values)
     config.Head_list.append(obj)

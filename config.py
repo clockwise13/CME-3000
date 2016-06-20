@@ -4,7 +4,7 @@ import sys
 import pygame
 import math
 import random
-import pickle
+import cPickle
 import threading
 import classes
 import helpers

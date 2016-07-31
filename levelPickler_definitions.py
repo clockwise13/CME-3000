@@ -35,11 +35,7 @@ def main():
         os.makedirs(outputPath)
 
         with open(outputPath + "/" + "level1ogur.txt",'wb') as output_file:
-            cPickle.dump(ogur, output_file)
-
-    # this is the part for the level loading function of the main game module
-    """with open(r'/Levels/Level1/ogur.txt', 'rb') as input_file:
-        new_ogur = cPickle.load(input_file)"""
+            cPickle.dump(ogur, output_file, protocol=2)
 
 if __name__ == '__main__':
     main()

@@ -168,8 +168,10 @@ class Level_creator():
     def __init__(self, ogur):
         """"Change of plans: create pickled instances of levels in the levelPickler module. Use this class to unpickle those
         instances and create a level out of them."""
-        new_ogur = cPickle.load(ogur)
-        print new_ogur # debug print
+        #print "This is the ogur variable: " + str(ogur) # debug print
+        new_ogur = cPickle.load(open(os.getcwd() + "/" + 'Levels' + '/' + "level1ogur.txt", "rb"))
+        print new_ogur
+        #print "This is the new_ogur variable: " + str(new_ogur) # debug print
 
         self.music = new_ogur.music # pygame.mixer.Sound(new_ogur.music) # create a Sound object
         self.bg = new_ogur.background #load background image

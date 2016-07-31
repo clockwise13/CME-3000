@@ -16,8 +16,18 @@ def quitter():
 def new_game():
     # open first level from a pickled file
 
-    with open(r'ogur.txt', 'rb') as input_file:
-        loadLevelOne = classes.Level_creator(input_file)
+    cur_dir = os.getcwd()
+    input_dir = cur_dir + "/" + 'Levels' + '/'
+
+    """with open(cur_dir + "/" + 'Levels' + '/' + "level1ogur.txt", 'rb') as input_file:
+        new_level = cPickle.load(input_file)
+        #level_one = classes.Level_creator(input_file)
+        print "New game initiated!"""
+    with open(input_dir + 'level1ogur.txt', 'rb') as input_file:
+        new_level = classes.Level_creator(input_file)
+
+    #load_level_one = config.classes.Level_creator(input_file)
+    #load_level_one.play_it_again_sam()
 
 def spawner(class_type, init_values):
     obj = class_type(init_values)

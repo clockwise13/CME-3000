@@ -8,6 +8,8 @@ class Level():
     module accordingly - otherwise the attributes will go unrecognized and only take up memory in the namespace. This is
     something of a lowly level editor. Sorry, no GUI for this mofo. C programming Master Race gives a thubms up (their asses)."""
 
+    __module__ = os.path.splitext(os.path.basename(__file__))[0] # bug workaround, look in the changelog for details
+
     def __init__(self):
         self.objects = {}
         self.music = '02.wav'
@@ -33,7 +35,7 @@ def main():
         os.makedirs(outputPath)
 
         with open(outputPath + "/" + "level1ogur.txt",'wb') as output_file:
-            cPickle.dump(ogur, output_file, protocol=-1)
+            cPickle.dump(ogur, output_file)
 
     # this is the part for the level loading function of the main game module
     """with open(r'/Levels/Level1/ogur.txt', 'rb') as input_file:

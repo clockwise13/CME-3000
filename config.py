@@ -1,6 +1,7 @@
 # config module with global imports and values
 
 import sys
+import os
 import pygame
 import math
 import random

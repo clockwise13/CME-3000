@@ -30,6 +30,7 @@ def main():
     # create I/O handler
 
     EventHandler = config.classes.Event()
+    pygame.mixer.init() # initialize the mixer
 
     # main loop
     while quit_flag == False:

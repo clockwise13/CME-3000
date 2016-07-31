@@ -168,10 +168,9 @@ class Level_creator():
     def __init__(self, ogur):
         """"Change of plans: create pickled instances of levels in the levelPickler module. Use this class to unpickle those
         instances and create a level out of them."""
-        #print "This is the ogur variable: " + str(ogur) # debug print
-        new_ogur = cPickle.load(open(os.getcwd() + "/" + 'Levels' + '/' + "level1ogur.txt", "rb"))
-        print new_ogur
-        #print "This is the new_ogur variable: " + str(new_ogur) # debug print
+
+        new_ogur = cPickle.load(ogur)
+        print new_ogur # debug print
 
         self.music = new_ogur.music # pygame.mixer.Sound(new_ogur.music) # create a Sound object
         self.bg = new_ogur.background #load background image
@@ -181,7 +180,12 @@ class Level_creator():
 
     def play_it_again_sam(self):
         print self.music
-        #self.music.play(-1) # start playing the Sound object; mixer picks the channel; -1 for infinite looping
+        music_object = pygame.mixer.Sound(self.music)
+        print music_object # debug print
+        music_object.play(-1) # start playing the Sound object; mixer picks the channel; -1 for infinite looping
+        print pygame.mixer.get_busy()
+        print music_object.get_volume()
+        print music_object.get_length()
 
     def music_volume(self, volume):
         self.music.set_volume(volume) # set's music volume; use float values from 0.0 to 1.0

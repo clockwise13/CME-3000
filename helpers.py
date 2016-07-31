@@ -19,12 +19,10 @@ def new_game():
     cur_dir = os.getcwd()
     input_dir = cur_dir + "/" + 'Levels' + '/'
 
-    """with open(cur_dir + "/" + 'Levels' + '/' + "level1ogur.txt", 'rb') as input_file:
-        new_level = cPickle.load(input_file)
-        #level_one = classes.Level_creator(input_file)
-        print "New game initiated!"""
     with open(input_dir + 'level1ogur.txt', 'rb') as input_file:
-        new_level = classes.Level_creator(input_file)
+        New_level = classes.Level_creator(input_file)
+
+    New_level.play_it_again_sam()
 
     #load_level_one = config.classes.Level_creator(input_file)
     #load_level_one.play_it_again_sam()

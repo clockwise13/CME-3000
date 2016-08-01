@@ -12,7 +12,7 @@ class Level():
 
     def __init__(self):
         self.objects = {}
-        self.music = '02.wav'
+        self.music = '02_1.wav'
         self.background = None
         self.spawners = [config.classes.Spawn("Peon", (config.res_x/1.5, config.res_y/3), 50, 50)]
         self.misc = {}

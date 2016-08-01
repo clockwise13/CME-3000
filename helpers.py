@@ -22,7 +22,7 @@ def new_game():
     with open(input_dir + 'level1ogur.txt', 'rb') as input_file:
         New_level = classes.Level_creator(input_file)
 
-    New_level.play_it_again_sam()
+    New_level.play_it_again_Sam()
 
     #load_level_one = config.classes.Level_creator(input_file)
     #load_level_one.play_it_again_sam()

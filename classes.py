@@ -170,28 +170,24 @@ class Level_creator():
         instances and create a level out of them."""
 
         new_ogur = cPickle.load(ogur)
-        print new_ogur # debug print
 
-        self.music = new_ogur.music # pygame.mixer.Sound(new_ogur.music) # create a Sound object
+        self.music = new_ogur.music # assign the ambient music object here
         self.bg = new_ogur.background #load background image
         self.spawners = new_ogur.spawners # load spawners
         self.misc = new_ogur.misc
 
 
-    def play_it_again_sam(self):
+    def play_it_again_Sam(self):
         print self.music
-        music_object = pygame.mixer.Sound(self.music)
+        music_object = pygame.mixer.music.load(self.music)
         print music_object # debug print
-        music_object.play(-1) # start playing the Sound object; mixer picks the channel; -1 for infinite looping
-        print pygame.mixer.get_busy()
-        print music_object.get_volume()
-        print music_object.get_length()
+        pygame.mixer.music.play(-1) # plays music; mixer picks the channel; -1 for infinite looping
 
     def music_volume(self, volume):
-        self.music.set_volume(volume) # set's music volume; use float values from 0.0 to 1.0
+        pygame.mixer.music.set_volume(volume) # set's music volume; use float values from 0.0 to 1.0
 
     def stop_the_music(self):
-        self.music.stop() # stops the music playback
+        pygame.mixer.music.stop() # stops the music playback
 
     def set_background(self):
         # this sets the level background to be filled with every frame (?)

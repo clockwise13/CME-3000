@@ -18,13 +18,6 @@ class Peon(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
 
-        '''Old code for movement here:
-        # randomly assign a position to the Peon instance;
-        #might be replaced by a later spawner on a group level
-        self.pos = ((config.random.randrange(10, config.res_x),
-                     config.random.randrange(10, config.res_y /2)))
-        self.direction = "R"'''
-
         #Speed vectors
         self.change_x = 0
         self.change_y = 0
@@ -126,25 +119,31 @@ class Spawn():
 
         # flag for turning a spawner on and off
         self.active = False
+        self.add(config.Object_list)
 
     def activate(self):
         # turn spawner on
         self.active = True
         print "Spawner active"
+        print self.active
 
     def deactivate(self):
         #turn spawner off
         self.active = False
         print "Spawner deactivated"
 
-    def spawning(self):
+    def update(self):
         if self.active == True:
+            print "Spawner spawning running"
+            print self.type
             if random.randrange(0, self.interval) <= 1 and len(config.Peon_list) < self.limiter or self.limiter == -1:
                 """ Random number generation based spawning: with every program loop, if the spawning method is called it will have a spawn_interval/100 chance of creating an object. Use -1 value for unlimited spawning and resulting clusterfuck."""
 
                 if self.type == "Peon":
+                    print "Self type confirmed"
                     # spawn the critter
                     obj = Peon()
+                    print "Spawned Peon"
                     obj.rect.x = self.pos[0]
                     obj.rect.y = self.pos[1]
                     # randomly assign an initial vector of movement - move this to a more sensible place
@@ -153,16 +152,17 @@ class Spawn():
                         obj.go_left()
                     else:
                         obj.go_right()
-                    return
+                    #return
                 else:
                     pass
             elif len(config.Peon_list) >= self.limiter:
                 self.deactivate()
                 return
 
-        def get_spawner_attr(self):
-            # a get func for easy lookup of each spawner instance's attributes
-            return (self.type, self.pos, self.interval, self.limiter, self.active)
+    def get_spawner_attr(self):
+        # a get func for easy lookup of each spawner instance's attributes
+        attr_list = [self.type, self.pos, self.interval, self.limiter, self.active]
+        return attr_list
 
 class Level_creator():
     def __init__(self, ogur):
@@ -191,9 +191,13 @@ class Level_creator():
 
     def set_background(self):
         # this sets the level background to be filled with every frame (?)
-        currentDisplay = pygame.display.get_surface() # retreive the currently used display surface
-        bg = pygame.image.load(self.bg) # create a Surface object from the BG image
-        currentDisplay.blit(bg) # blit the GB Surface onto the display Surface
+        current_Display = pygame.display.get_surface() # retreive the currently used display surface
+        if self.bg == None:
+            current_Display.fill(config.WHITE)
+            print "YoMamaError nr. 3423425678: No display Surface to use."
+        else:
+            # make it blit with the ever useful GUI_OBJECT class
+            bg  = GUI_OBJECT(self.bg, (config.res_x/2,config.res_y/2), None, None, 960, 665)
 
     def spawn_spawners(self):
         # this turns on the random spawn mechanic of the Spawn class; will not yield any result if the spawners are not active!
@@ -203,6 +207,7 @@ class Level_creator():
     def activate_spawners(self):
         for spawner in self.spawners:
             spawner.activate()
+            print "Activated spawner:" + str(spawner)
 
     def deactivate_spawners(self):
         for spawner in self.spawners:
@@ -213,6 +218,7 @@ class Level_creator():
         for spawner in self.spawners:
             spawner_lookup = spawner.get_spawner_attr()
             temp_spawner_table.append(spawner_lookup)
+        print temp_spawner_table
         return temp_spawner_table
 
     def set_misc_elements(self):
@@ -246,6 +252,36 @@ class Event():
                 return event
             else:
                 return None
+
+class GUI_OBJECT(pygame.sprite.Sprite):
+    """GUI class template for graphic objects for the interface and then
+    specify the details for every group (buttons, sliders, meters etc.)
+    IMPORTANT: pass the variable used for creating the event handler to the
+    function, don't create a new one!"""
+
+    def __init__(self, image, pos, func, event_handler_instance, width, height):
+        pygame.sprite.Sprite.__init__(self)
+        sprite_sheet = SpriteSheet(image)
+        self.pos = pos
+        self.function = func # pass None to make a non-interactive object
+        self.event_handler = event_handler_instance
+        self.dimension = (width, height)
+        self.image = sprite_sheet.get_image(0, 0, self.dimension[0], self.dimension[1])
+        self.rect = self.image.get_rect()
+        self.rect.center = self.pos
+        self.add(config.GUI_list)
+
+    def update(self):
+        if self.function != None:
+            self.event_handler.get_events()
+            # check for mouse-click collsions with the button rect, then do stuff
+            if self.event_handler.event.type == config.pygame.MOUSEBUTTONDOWN and \
+            self.rect.collidepoint(self.event_handler.event.pos) == True:
+                self.function()
+            else:
+                pass
+        else:
+            pass
 
 class GUI_BUTTON(pygame.sprite.Sprite):
     """Might be a good idea to use class inheritance for this - make a GUI class as template for interactive

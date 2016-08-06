@@ -13,7 +13,7 @@ class Level():
     def __init__(self):
         self.objects = {}
         self.music = '02_1.wav'
-        self.background = None
+        self.background = os.getcwd() + '/' + 'Duda_okej.png'
         self.spawners = [config.classes.Spawn("Peon", (config.res_x/1.5, config.res_y/3), 50, 50)]
         self.misc = {}
 
@@ -23,6 +23,7 @@ def main():
     # create instance to pickle
     ogur = Level1
     print ogur.music # debug print
+    print ogur.background # debug print
     print
     # this is the part for the levelPickler module
     directory = os.getcwd()

@@ -23,30 +23,16 @@ def new_game():
         New_level = classes.Level_creator(input_file)
 
     New_level.play_it_again_Sam()
-
-    #load_level_one = config.classes.Level_creator(input_file)
-    #load_level_one.play_it_again_sam()
-
-def spawner(class_type, init_values):
-    obj = class_type(init_values)
-    config.Head_list.append(obj)
-    for lst in config.Object_list:
-            for obj_name in lst:
-                print "Pizda nad głową!"
-            #   print len(config.Object_list)
-            #   print
-            #   print len(lst)
-    else:
-        print "Nic"
+    GUI_list = [] # to avoid redrawing the GUI elements
+    New_level.set_background()
+    New_level.get_spawners()
+    New_level.activate_spawners()
+    New_level.update()
 
 
 def collider(test_subject):
     # uses the default pygame Sprite collision method
     collisions_list = pygame.sprite.spritecollide(test_subject, config.Peon_list, True)
-
-def mover(pos, vector):
-    pass
-    # return new_item_pos
 
 def get_pos():
     pass

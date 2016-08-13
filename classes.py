@@ -112,9 +112,10 @@ class Projectile():
     # here does the code lie
     pass
 
-class Spawn():
+class Spawn(pygame.sprite.Sprite):
     """ a general spawner class: the idea is to place this in a level and make it spawn X by using X's internal methods; requires method consistency across classes obviously duh!"""
     def __init__(self, object_to_spawn, position_to_spawn, spawn_interval, limiter):
+        super(Spawn, self).__init__()
         self.type = object_to_spawn
         self.pos = position_to_spawn
 
@@ -127,6 +128,8 @@ class Spawn():
         # flag for turning a spawner on and off
         self.active = False
 
+        self.add(config.Spawner_list) # this it to enable update method to run on each frame
+
     def activate(self):
         # turn spawner on
         self.active = True
@@ -137,10 +140,12 @@ class Spawn():
         self.active = False
         print "Spawner deactivated"
 
-    def spawning(self):
+    def update(self):
         if self.active == True:
             if random.randrange(0, self.interval) <= 1 and len(config.Peon_list) < self.limiter or self.limiter == -1:
                 """ Random number generation based spawning: with every program loop, if the spawning method is called it will have a spawn_interval/100 chance of creating an object. Use -1 value for unlimited spawning and resulting clusterfuck."""
+                print "Spawn succesful!"
+                print
 
                 if self.type == "Peon":
                     # spawn the critter

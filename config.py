@@ -27,6 +27,7 @@ Peon_list = pygame.sprite.Group()
 Head_list = pygame.sprite.Group()
 Object_list = pygame.sprite.Group()
 GUI_list = pygame.sprite.Group()
+Spawner_list = pygame.sprite.Group()
 
 # dummy counter for dummy counting
 

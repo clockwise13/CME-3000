@@ -1,0 +1,15 @@
+###############################################################################
+#  Starting a changelog for incremental changes to the physics part of the    #
+# game.                                                                       #
+################################################################################
+
+Commit nr 1 to the collision_physics branch.
+
+1. Created new branch for collsion called "collision_physics".
+2. Modified the main.py file: removed GUI buttons and reinstated the testing be-
+-havior of the random Spawner.
+3. Goal: create a simple "if collide with X - change direction" mechanic for the
+Peons. Sub-goal: Peons shoud bounce off of static objects, like scenery. The
+scenery elements should stay in place.
+
+################################################################################

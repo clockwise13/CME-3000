@@ -20,8 +20,8 @@ def main():
     # create the main Surface
     EKRAN = helpers.displayer()
 
-    #spawner = classes.Spawn("Peon", (config.res_x/1.5, config.res_y/3), 50, 50)
-    #spawner.activate()
+    spawner = classes.Spawn("Peon", (config.res_x/1.5, config.res_y/3), 50, 50)
+    spawner.activate()
 
     # create a Clock instance for updates and FPS management
     fpsClock = pygame.time.Clock()
@@ -45,15 +45,12 @@ def main():
         pickled once as a special level instance and loaded on boot to slim down
         the code of main."""
 
-        # draw menu buttons for "New Game" and "Quit"
-
-        NewGameButton = config.classes.GUI_BUTTON("new_game.png", \
-        (config.res_x/2-200, config.res_y/2-100), config.helpers.new_game, EventHandler, 185, 150)
-
-        QuitButton = config.classes.GUI_BUTTON("happy_baton.png", \
-        (config.res_x/2+150, config.res_y/2+75), config.helpers.quitter, EventHandler, 279, 274)
-
         # finalise the loop
+        Peon_list.update()
+        Peon_list.draw(EKRAN)
+        Object_list.update()
+        Object_list.draw(EKRAN)
+        Spawner_list.update()
         GUI_list.update()
         GUI_list.draw(EKRAN)
         fpsClock.tick(FPS)

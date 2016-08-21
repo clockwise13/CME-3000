@@ -80,7 +80,7 @@ class Peon(pygame.sprite.Sprite):
     def stop(self):
             self.change_x = 0
 
-class Head(config.pygame.sprite.Sprite):
+class Head(pygame.sprite.Sprite):
     def __init__(self):
         super(Head, self).__init__()
         self.pos = (config.res_x - 200, config.res_y - 300)
@@ -105,9 +105,15 @@ class Projectile():
     # here does the code lie
     pass
 
-class Spawn():
-    """ a general spawner class: the idea is to place this in a level and make it spawn X by using X's internal methods; requires method consistency across classes obviously duh!"""
+class Spawn(pygame.sprite.Sprite):
+    """A general spawner class: the idea is to place this in a level and make
+    it spawn X by using X's internal methods; requires method consistency across
+    classes obviously duh!
+    Update: the class is now a child of the pygame.sprite.Sprite class, to
+    enable the use of the update() method on every frame.
+    """
     def __init__(self, object_to_spawn, position_to_spawn, spawn_interval, limiter):
+        super(Spawn, self).__init__()
         self.type = object_to_spawn
         self.pos = position_to_spawn
 
@@ -124,8 +130,6 @@ class Spawn():
     def activate(self):
         # turn spawner on
         self.active = True
-        print "Spawner active"
-        print self.active
 
     def deactivate(self):
         #turn spawner off
@@ -134,11 +138,12 @@ class Spawn():
 
     def update(self):
         if self.active == True:
-            print "Spawner spawning running"
-            print self.type
+            "Self.active evaluated to True"
             if random.randrange(0, self.interval) <= 1 and len(config.Peon_list) < self.limiter or self.limiter == -1:
-                """ Random number generation based spawning: with every program loop, if the spawning method is called it will have a spawn_interval/100 chance of creating an object. Use -1 value for unlimited spawning and resulting clusterfuck."""
-
+                """ Random number generation based spawning: with every program
+                loop, if the spawning method is called it will have a
+                spawn_interval/100 chance of creating an object.
+                Use -1 value for unlimited spawning and resulting clusterfuck."""
                 if self.type == "Peon":
                     print "Self type confirmed"
                     # spawn the critter
@@ -152,12 +157,13 @@ class Spawn():
                         obj.go_left()
                     else:
                         obj.go_right()
-                    #return
                 else:
                     pass
             elif len(config.Peon_list) >= self.limiter:
+                print "Len too long, deactivating"
                 self.deactivate()
-                return
+        else:
+            print "something went wrong with the update or evaluation"
 
     def get_spawner_attr(self):
         # a get func for easy lookup of each spawner instance's attributes
@@ -166,8 +172,9 @@ class Spawn():
 
 class Level_creator():
     def __init__(self, ogur):
-        """"Change of plans: create pickled instances of levels in the levelPickler module. Use this class to unpickle those
-        instances and create a level out of them."""
+        """"Change of plans: create pickled instances of levels in the
+        levelPickler module. Use this class to unpickle those instances and
+        create a level out of them."""
 
         new_ogur = cPickle.load(ogur)
 
@@ -178,9 +185,7 @@ class Level_creator():
 
 
     def play_it_again_Sam(self):
-        print self.music
         music_object = pygame.mixer.music.load(self.music)
-        print music_object # debug print
         pygame.mixer.music.play(-1) # plays music; mixer picks the channel; -1 for infinite looping
 
     def music_volume(self, volume):
@@ -199,15 +204,9 @@ class Level_creator():
             # make it blit with the ever useful GUI_OBJECT class
             bg  = GUI_OBJECT(self.bg, (config.res_x/2,config.res_y/2), None, None, 960, 665)
 
-    def spawn_spawners(self):
-        # this turns on the random spawn mechanic of the Spawn class; will not yield any result if the spawners are not active!
-        for spawner in self.spawners:
-            spawner.spawning()
-
     def activate_spawners(self):
         for spawner in self.spawners:
             spawner.activate()
-            print "Activated spawner:" + str(spawner)
 
     def deactivate_spawners(self):
         for spawner in self.spawners:
@@ -217,9 +216,8 @@ class Level_creator():
         temp_spawner_table = []
         for spawner in self.spawners:
             spawner_lookup = spawner.get_spawner_attr()
-            temp_spawner_table.append(spawner_lookup)
-        print temp_spawner_table
-        return temp_spawner_table
+            #temp_spawner_table.append(spawner_lookup)
+        print spawner_lookup
 
     def set_misc_elements(self):
         # this will need to be filled out if we have any misc items that need special treatment

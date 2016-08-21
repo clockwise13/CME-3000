@@ -1,0 +1,148 @@
+#######################################################
+# Rolling changelog to track local changes for commits#
+#                                                     #
+#######################################################
+
+1. Added changelog.txt to file folder
+2. Added *.txt exclusion to .gitignore
+3. Cleaned up legacy code from helpers
+4. Cleaned a bit of whitespace here and there
+5. Removed the attempts at automatic movement in simplePythonTest
+6. Restructured main loop on a while clause which solved the bug with the animation not working properly
+7. Moved the fill call on EKRAN inside of the inner while loop of the main() function in simplePytonTest to prevent from drawing over the previously drawed frames - not sure if that's the best fix to the problem.
+8. Added spawner under key = p to test multiple Peon behaviour.
+
+#########################################################
+
+Commit nr 2 to the level-loader branch
+
+9. Added a new levelPicker.py module -a work-in-progress module for creating pickled files with levels. Very early draft. Contains a dict for mapping object types (e.g. Peons, Projectiles, Tits) to lists of instances of class objects (e.g. Peons --> [<peon_instance_1>, <peon-instance_2>]).
+10. Added Spawn() and Level_creator() claesses to classes.py for spawner objects to spawn creatures at an interval and at an position; and for creating instances of levels - only for use with the levelPickler.py module - early draft as well. The Spawner module is functional now, though it's incredibly resource heavy and muddles the rest of the program. Might be a dead end and better off trying threading.
+11. Added pickle import in the config file.
+12. Changed simplePytonTest module for spawner testing.
+
+###########################################################
+
+Commit nr 3 to the level-loader branch
+
+13. Improved the random-based spawner to the point where it reliably spawns.
+
+14. Played around with Tkinter, learned a valuable lesson: depraciated versions of libraries we work with can cause big fuckups. The only way to use PNG files with Tkinter is to use Tkinter 8.6 or higher. Which only works with Python 3.x. Installing Python 3.x with the newest Tkinter does not mean you can use that library with Python 2.7. It does however replace the old, compatible Tkinter library completely, so you're fucked and can either move to Python 3.x (and upgrade Pygame and all other used libraries accordingly), move away from PNGs or rewrite everything back.
+15. Let go of Tkinter GUI/launcher idea. Moved back to rough Pygame stuff.
+16. Created two new classes: Event and GUI_BUTTON:
+EVENT --> planned as a event handler object - we don't really need it as an object, but will save space and readability of the testing modules and the final main module this way. Handles input from keyboard and mouse. Using that input should be handled outside of the Event class.
+GUI_BUTTON --> makes GUI buttons into a template, for easy using. Pass image, position and function for the button. Lots of room for development here, including a general GUI class and using smart inheritance to share similar behavior across GUI elements.
+17. Cleaned up legacy code in classes.py.
+
+############################################################
+
+Commit nr 4 to the level-loader branch (pushed to repo)
+
+18. Some groundwork on the EVEN and GUI_BUTTON classes done.
+19. GUI_test file created for testing of GUI elements interaction. Very vasic and buggy version.
+
+###############################################################
+
+Commit nr 5 to the level-loader branch (not pushed to repo)
+
+20. Event class improved to handle quit events and mouse input (single MOUSEBUTTONDOWN and MOUSEMOTION events) - works, returns mouse position.
+21. GUI_BUTTON class works, now will think of how to make it "clickable", i.e. how to check for clicks in the rect object and how to handle them.
+22. GUI_test.py working without issues, may be used with different GUI elements in the future to test for display issues and I/O handling.
+
+23. In need of testing: will the event handler capture I/O smoothly? The way it's written it captures I/O on a snapshot, point-of-time basis, which
+will likely lead to problems of missed input. Probably better to put it on a while loop, but then will have to resolve the threading problem... again.
+
+##########################################################################
+
+Commit nr 6 to the level-loader branch (pushed to repo)
+
+24. After a few tests the GUI_BUTTON class is clickable, i.e. it calls the get_events method of a event handler (Event class instance), checks if it's a MOUSEBUTTONDOWN type of event, if so, it executes the code passed in. Just plug in a call to the function you want to call as the third argument in the GUI_BUTTON constructor and watch the world burn.
+25. Introduced slight stylistic change into the code with line breaks. Shouldn't have any apparent effect on the code execution.
+26. Removed GUI objects from the Level_creator class, as GUI should be the same for every level, more or less. The GUI objects also live in the GUI_dict, similar to Peons in the Peon_list.
+Next up: connecting the GUI_BUTTON functionality with the pickle loader.
+
+############################################################################
+
+Commit nr 7 to the level-loader branch
+
+27. Created a new "main" file to start testing the functionality of loading levels in, having a persistent menu etc.
+28. Added new_game function to helpers to define all actions that need to be taken when NewGameButton is clicked in main.
+29. Added quitting function to QuitButton in main (simply plugged in quitter function to an instance of GUI_BUTTON, easy!).
+
+Some inaccurate testing feedback: the QuitButton doesn't always register the click; you have to repeat 2-3 times to get it to work. This is likely a consequence of the EventHandler being tied to the 60 FPS clock. Think about either using a much faster clock (600 FPS) or untying it from the FPS alltogether and putting on a while loop instead (this will again bump into the problem of infitinte looping though).
+
+##############################################################################
+
+Commit nr 8 - to the level-loader branch
+
+30. Pickler testing suite done in dummyPickler.py. Works like a charm with reconstructing a class instance. Some limitations have shown though:
+(1) Picle seems to be a bit lost when a class creates one of it's atrributes as an instance of another class, e.g. having a 'Level' class that inits by taking a sound file and creating a pygame.mixer.Sound object out of that file. Pickle get's it's panties in a bunch over that. Gotta use filenames, object descriptors and that sort of stuff for this.
+(2) Not that much of a limitation, but I'm switching to using cPickle. It's much faster. Also C language Master Race.
+
+31. Pickler testing suite moved to the levelPickler module. Still works like a charm (tempting the coding Furies here...), now !NEU!, it checks if there is a level folder in the main game folder - if not, it creates one and dumps a level1 pickle file inside. This will need a slight rebuild once we have more than one level.
+32. Changed the function of the levelPickler module - it was initially supposed to just pickle (pack into a binary text file) an instance of a level-type object that would be created by the Level_creator class. This would require the following steps to create and load in a level:
+
+1. Create a level using the template in the Level_creator class.
+2. Pickle an instance of that level using the levelPickler module.
+3. Create a separate function/module/class to unpickle the level.
+4. Create a separate function/module/class to "unpack" the level from the unpickled file, i.e. display the relevent elements, initiale spawners etc.
+
+This is a very low-level way to do this and frankly I can't be bothered to create so many modules/classes that pass variables without doing anything useful.
+
+In the new scheme we do:
+
+1'. Create a level and pickle it using the template in levelPickler module.
+2'. Pickled level files get passed by functions such as new_game for handling to the Level_creator, which does the magic of unpacking and initiating.
+
+The only challenge here is to embed this smoothly in the main game loop. But that's the same challenge as with the previous scheme.
+
+###############################################################################
+
+Commit nr 9 to the level-loader branch
+Commit nr 10 to the level-loader branch (nr. 5 and 6 below)
+
+Found a bug with cPickle. In result had to modify the Level() class in the levelPickler.py module to work around this issue. Here's the URL of the blognote
+by Stefaan Lippens I used to solve the problem: <http://stefaanlippens.net/pickleproblem>.
+
+Here's the breakdown:
+1. When we first define the class Level() in the levelPickler.py module and then pickle an instance of Level() in the same module, the pickled output file
+get's baked with a reference to the name of the parent module. Since we're opening levelPickler.py as a standalone (sorta) level editing app, it get's opened
+with the name: __main__.
+2. When we try to unpickle the level, cPickle reads the name of the parent module for the file. It then proceeds to try to define the class that's the prototype
+for the pickled instance*.
+3. cPickle looks for the definition of the class type Level() in the module named __main__, but that name is now used by a different module (our own main.py,
+that was designed specifically to be treated as the __main__ in all circumstances). It therefore finds no attribute of __main__ equal to Level() and throws
+a AttributeError.
+4. The solution is to force cPickle to define the __module__ variable for Level() as equal to levelPickler.py. Stefaan Lippens code was used for this. Mad props
+for the guy.
+5. Another thing to note: using the 'protocole = -1' arg when pickling threw another fun error:
+"Can't pickle levelPickler.Level: it's not the same object as levelPickler.Level"
+Deleteing the forced protocole argument solved the issue though.
+6. EDIT: NOT QUITE. Deleting the protocole arg makes cPickle save instances in ASCII format and that goes well enough. But trying to use the higher protocoles
+causes the error mentioned in 5 above. The cause of this is: Level ostensibly has a __module__ parameter equal to it's file name, but the instance of Level is
+created by __main__, so Pickle get's confused - what it's trying to serialize is different from what it has in it's memory. The two objects are not equal, so
+it fails some internal check of Pickle. The only way around that, as far as I know is to call levelPickler from another module. At this point it would probably
+make more sense to simply throw the Level class into classes.py, but that would defeat the design of levelPickler and create a messy class definition. I'd rather
+have a clunky two-module thingy for creating levels.
+
+*(In a way this gives insight into how Pickle and cPickle work. To allow the instances of the class object to be created with a dynamic scope, e.g. different
+parameters and args, it needs to use the class definition every time to dynamically create objects from the pickled data. In essence, Pickle 'quietly' imports
+the class definition, plugs the pickled data and recreates the instance in the stack. It's not so much a freezer for class instances as a fast lane for recreating
+instances of class objects, with less memory overhead.)
+
+
+###############################################################################
+
+Commit nr 11 to the branch level-loader
+
+1. Debugged the sound loading. Must use PCM .wav files if using .wav at all. I used Audacity to reformat the .wav.
+2. Background music playing well enough, seperate methods used for stopping playback and volume adjustment.
+
+##############################################################################
+
+Commit nr 12 to the branch level-loader
+
+1. Rebuilt the Spawn() class as a child of pygame.sprite.Sprite class. This is to allow the update() method to be
+called on each frame. We will only call the update() function, not the draw() function.
+2. Removed the spawn_spawners method from the Level_creator class, as it's been
+rebranded as the update() method.

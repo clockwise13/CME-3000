@@ -20,8 +20,7 @@ def main():
     # create the main Surface
     EKRAN = helpers.displayer()
 
-    spawner = classes.Spawn("Peon", (config.res_x/1.8, config.res_y/3.2), 50, 50)
-    spawner.update()
+    #spawner = classes.Spawn("Peon", (config.res_x/1.8, config.res_y/3.2), 50, 50)
 
     # create a Clock instance for updates and FPS management
     fpsClock = pygame.time.Clock()

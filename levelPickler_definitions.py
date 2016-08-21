@@ -14,7 +14,7 @@ class Level():
         self.objects = {}
         self.music = '02_1.wav'
         self.background = os.getcwd() + '/' + 'Duda_okej.png'
-        self.spawners = [config.classes.Spawn("Peon", (config.res_x/1.5, config.res_y/3), 50, 50)]
+        self.spawners = [config.classes.Spawn("Peon", (config.res_x/2, config.res_y/3), 50, 50)]
         self.misc = {}
 
 Level1 = Level()

@@ -19,7 +19,23 @@ def main():
     quit_flag = False
     # create the main Surface
     EKRAN = helpers.displayer()
+    wall_array_x = config.res_x/config.wall_size[0]
+    wall_array_y = config.res_y/config.wall_size[1]
+    wall_array_list = []
 
+    for n in range(1, wall_array_y):
+        """This for loop creates n-number of wall objects to cover the sides of
+        the screen. With a bit of work this could provie a basic and rather
+        unsexy wall array generator. Good for testing tho."""
+
+        wall = classes.Enviroment_Wall()
+        posx = 0
+        posy = config.res_y - config.wall_size[1] * n
+        wall.set_pos((posx, posy))
+        wall_array_list.append(wall)
+
+    #Wall1 = classes.Enviroment_Wall()
+    #Wall1.set_pos((config.res_x/2, config.res_y/2))
     spawner = classes.Spawn("Peon", (config.res_x/1.5, config.res_y/3), 50, 50)
     spawner.activate()
 
@@ -44,6 +60,12 @@ def main():
         """This is the 'main menu' part of the main module code. It can be
         pickled once as a special level instance and loaded on boot to slim down
         the code of main."""
+
+        for obj in wall_array_list:
+            """this loop is waaaaaaaaaaaaay inefficient; collider should work
+            on the Object_list or smth simillar check between the collisions_list
+            there"""
+            config.helpers.collider(obj)
 
         # finalise the loop
         Peon_list.update()

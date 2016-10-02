@@ -39,10 +39,10 @@ def spawner(class_type, init_values):
     else:
         print "Nic"
 
-
 def collider(test_subject):
     # uses the default pygame Sprite collision method
     collisions_list = pygame.sprite.spritecollide(test_subject, config.Peon_list, True)
+    print collisions_list
 
 def mover(pos, vector):
     pass

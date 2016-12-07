@@ -134,9 +134,9 @@ class Spawn(pygame.sprite.Sprite):
     def deactivate(self):
         #turn spawner off
         self.active = False
-        print "Spawner deactivated"
 
     def update(self):
+        print "Update method of spawner: " + str(self) + " " + "entered."
         if self.active == True:
             "Self.active evaluated to True"
             if random.randrange(0, self.interval) <= 1 and len(config.Peon_list) < self.limiter or self.limiter == -1:
@@ -163,7 +163,7 @@ class Spawn(pygame.sprite.Sprite):
                 print "Len too long, deactivating"
                 self.deactivate()
         else:
-            print "something went wrong with the update or evaluation"
+            print "something went wrong with the update or evaluation " + str(self.active)
 
     def get_spawner_attr(self):
         # a get func for easy lookup of each spawner instance's attributes
@@ -181,6 +181,7 @@ class Level_creator():
         self.music = new_ogur.music # assign the ambient music object here
         self.bg = new_ogur.background #load background image
         self.spawners = new_ogur.spawners # load spawners
+        print "Here are the spawners from Level_creator():" + str(self.spawners)
         self.misc = new_ogur.misc
 
 
@@ -205,8 +206,11 @@ class Level_creator():
             bg  = GUI_OBJECT(self.bg, (config.res_x/2,config.res_y/2), None, None, 960, 665)
 
     def activate_spawners(self):
+        print self.spawners
         for spawner in self.spawners:
             spawner.activate()
+            print "Activated spawner:" + str(spawner) + " " + str(spawner.active)
+            print
 
     def deactivate_spawners(self):
         for spawner in self.spawners:
@@ -217,7 +221,10 @@ class Level_creator():
         for spawner in self.spawners:
             spawner_lookup = spawner.get_spawner_attr()
             #temp_spawner_table.append(spawner_lookup)
-        print spawner_lookup
+        print spawner
+        print "This is the spawner_lookup from get_spawners: " + \
+        str(spawner_lookup)
+        print
 
     def set_misc_elements(self):
         # this will need to be filled out if we have any misc items that need special treatment
@@ -248,6 +255,24 @@ class Event():
             elif event.type == config.pygame.MOUSEBUTTONDOWN:
                 mousex, mousey = event.pos
                 return event
+            elif event.type == config.pygame.KEYDOWN and \
+            event.key == config.pygame.K_o:
+                config.helpers.new_game()
+                return event
+            elif event.type == config.pygame.KEYDOWN and \
+            event.key == config.pygame.K_p:
+                print
+                print "The object list is: " + str(config.Object_list)
+                print
+                print "Peon list is: " + str(config.Peon_list)
+            elif event.type == config.pygame.KEYDOWN and \
+            event.key == config.pygame.K_l:
+                for obj in config.Object_list:
+                    print str(obj) + " " + str(obj.active)
+            elif event.type == config.pygame.KEYDOWN and \
+            event.key == config.pygame.K_a:
+                for obj in config.Object_list:
+                    obj.active = True
             else:
                 return None
 

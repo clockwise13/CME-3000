@@ -27,6 +27,7 @@ def new_game():
     New_level.set_background()
     New_level.get_spawners()
     New_level.activate_spawners()
+    return New_level
 
 
 def collider(test_subject):

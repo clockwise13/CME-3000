@@ -146,3 +146,8 @@ Commit nr 12 to the branch level-loader
 called on each frame. We will only call the update() function, not the draw() function.
 2. Removed the spawn_spawners method from the Level_creator class, as it's been
 rebranded as the update() method.
+
+Issue analysis:
+- it looks as if the activate_spawners() method doesn't work, while a simple external for loop assigning the
+self.active attribute does the job
+- TO DO: compare the way activate_spawners() works through debug logs vs. the for loop done in external fashion

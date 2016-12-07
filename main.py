@@ -54,7 +54,7 @@ def main():
         the code of main."""
 
         # finalise the loop
-        Object_list.update()
+        #Object_list.update()
         GUI_list.update()
         GUI_list.draw(EKRAN)
         Peon_list.update()

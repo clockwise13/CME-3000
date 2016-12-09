@@ -8,6 +8,7 @@ import random
 import cPickle
 import classes
 import helpers
+import traceback
 
 from pygame.locals import *
 from helpers import *

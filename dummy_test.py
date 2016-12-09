@@ -1,4 +1,5 @@
 import config
+from inspect import getmembers
 from config import *
 
 def main():
@@ -11,6 +12,8 @@ def main():
     print "w = call helpers.new_game()"
     print "e = print list of objects and peons"
     print "a = print active status for objects"
+    print "s = use the for loop in dummy_test to change the active attr"
+    print "d = print the stack using inspect"
 
     # create the main Surface
     EKRAN = helpers.displayer()
@@ -36,13 +39,19 @@ def main():
                 pygame.display.flip()
             elif event.type == pygame.KEYDOWN and \
             event.key == pygame.K_w:
-                helpers.new_game()
+                loaded_level = helpers.new_game()
+                """print loaded_level
+                list_of_members = getmembers(loaded_level)
+                for line in list_of_members:
+                    print str(line) + "\n"""
             elif event.type == pygame.KEYDOWN and \
             event.key == pygame.K_e:
                 print
                 print "The object list is: " + str(config.Object_list)
                 print
                 print "Peon list is: " + str(config.Peon_list)
+                for o in config.Object_list:
+                    print o.__dict__
             elif event.type == pygame.KEYDOWN and \
             event.key == pygame.K_a:
                 for obj in config.Object_list:

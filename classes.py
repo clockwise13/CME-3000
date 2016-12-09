@@ -168,7 +168,7 @@ class Spawn(pygame.sprite.Sprite):
     def get_spawner_attr(self):
         # a get func for easy lookup of each spawner instance's attributes
         attr_list = [self.type, self.pos, self.interval, self.limiter, self.active]
-        return attr_list
+        print attr_list
 
 class Level_creator():
     def __init__(self, ogur):
@@ -181,8 +181,10 @@ class Level_creator():
         self.music = new_ogur.music # assign the ambient music object here
         self.bg = new_ogur.background #load background image
         self.spawners = new_ogur.spawners # load spawners
-        print "Here are the spawners from Level_creator():" + str(self.spawners)
         self.misc = new_ogur.misc
+
+        for s in self.spawners:
+            print "self.spawners in Level_creator is: " + str(s.__dict__) + "\n"
 
 
     def play_it_again_Sam(self):
@@ -206,11 +208,22 @@ class Level_creator():
             bg  = GUI_OBJECT(self.bg, (config.res_x/2,config.res_y/2), None, None, 960, 665)
 
     def activate_spawners(self):
-        print self.spawners
-        for spawner in self.spawners:
+        for spwn in self.spawners:
+            spwn.active = True
+            print "self.spawners in Level_creator is: " + str(spwn.__dict__) + "\n"
+
+        for obj in config.Object_list:
+            if obj.__class__.__name__ == "Spawn":
+                print obj.active
+                obj.active = True
+                print obj.active
+            else:
+                print "debug please"
+
+        """for spawner in self.spawners:
             spawner.activate()
             print "Activated spawner:" + str(spawner) + " " + str(spawner.active)
-            print
+            print"""
 
     def deactivate_spawners(self):
         for spawner in self.spawners:
@@ -219,9 +232,9 @@ class Level_creator():
     def get_spawners(self):
         temp_spawner_table = []
         for spawner in self.spawners:
+            print spawner
             spawner_lookup = spawner.get_spawner_attr()
             #temp_spawner_table.append(spawner_lookup)
-        print spawner
         print "This is the spawner_lookup from get_spawners: " + \
         str(spawner_lookup)
         print

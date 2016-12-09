@@ -21,12 +21,13 @@ def new_game():
 
     with open(input_dir + 'level1ogur.txt', 'rb') as input_file:
         New_level = classes.Level_creator(input_file)
-
-    New_level.play_it_again_Sam()
-    GUI_list = [] # to avoid redrawing the GUI elements
-    New_level.set_background()
-    New_level.get_spawners()
-    New_level.activate_spawners()
+        New_level.activate_spawners()
+        for spwn in New_level.spawners:
+            for obj in config.Object_list:
+                if spwn == obj:
+                    print str(spwn) + "is equal to " + str(obj)
+                else:
+                    print str(spwn) + "is unequal to " + str(obj)
     return New_level
 
 

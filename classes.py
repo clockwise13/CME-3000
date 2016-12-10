@@ -13,8 +13,9 @@ class SpriteSheet(object):
         return image
 
 class Peon(pygame.sprite.Sprite):
-    # single Peon init at pos; try with a random pos tuple
-    # class rewritten to be a derivate of the pygame.sprite class template
+    """single Peon init at pos; try with a random pos tuple
+    class rewritten to be a derivate of the pygame.sprite class template"""
+
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
 
@@ -26,8 +27,8 @@ class Peon(pygame.sprite.Sprite):
         self.walking_frames_l = []
         self.walking_frames_r = []
 
-        #Player direction
-        self.direction = "R"
+        #Peon direction
+        self.direction = config.random.choice(("R","L"))
 
         #Loading the sprite sheet
         sprite_sheet = SpriteSheet("Peon_Animated.png")
@@ -125,6 +126,8 @@ class Spawn(pygame.sprite.Sprite):
 
         # flag for turning a spawner on and off
         self.active = False
+
+        # make the spawner a member of the sprite group in config
         self.add(config.Object_list)
 
     def activate(self):
@@ -136,24 +139,20 @@ class Spawn(pygame.sprite.Sprite):
         self.active = False
 
     def update(self):
-        print "Update method of spawner: " + str(self) + " " + "entered."
         if self.active == True:
-            "Self.active evaluated to True"
             if random.randrange(0, self.interval) <= 1 and len(config.Peon_list) < self.limiter or self.limiter == -1:
                 """ Random number generation based spawning: with every program
                 loop, if the spawning method is called it will have a
                 spawn_interval/100 chance of creating an object.
                 Use -1 value for unlimited spawning and resulting clusterfuck."""
+
                 if self.type == "Peon":
-                    print "Self type confirmed"
                     # spawn the critter
                     obj = Peon()
-                    print "Spawned Peon"
                     obj.rect.x = self.pos[0]
                     obj.rect.y = self.pos[1]
-                    # randomly assign an initial vector of movement - move this to a more sensible place
-                    movin = random.choice(("left", "right"))
-                    if movin == "left":
+
+                    if obj.direction == "L":
                         obj.go_left()
                     else:
                         obj.go_right()
@@ -163,12 +162,13 @@ class Spawn(pygame.sprite.Sprite):
                 print "Len too long, deactivating"
                 self.deactivate()
         else:
-            print "something went wrong with the update or evaluation " + str(self.active)
+            pass
 
     def get_spawner_attr(self):
         # a get func for easy lookup of each spawner instance's attributes
         attr_list = [self.type, self.pos, self.interval, self.limiter, self.active]
-        print attr_list
+        for attr in attr_list:
+            print str(attr) + "\n"
 
 class Level_creator():
     def __init__(self, ogur):
@@ -182,10 +182,6 @@ class Level_creator():
         self.bg = new_ogur.background #load background image
         self.spawners = new_ogur.spawners # load spawners
         self.misc = new_ogur.misc
-
-        for s in self.spawners:
-            print "self.spawners in Level_creator is: " + str(s.__dict__) + "\n"
-
 
     def play_it_again_Sam(self):
         music_object = pygame.mixer.music.load(self.music)
@@ -208,39 +204,32 @@ class Level_creator():
             bg  = GUI_OBJECT(self.bg, (config.res_x/2,config.res_y/2), None, None, 960, 665)
 
     def activate_spawners(self):
-        for spwn in self.spawners:
-            spwn.active = True
-            print "self.spawners in Level_creator is: " + str(spwn.__dict__) + "\n"
+        """Activates spawners in the Object_list Sprite group. This has to be
+        made via loop, since the spwaners-as-members-of-a-group live in the
+        config module's namespace."""
 
         for obj in config.Object_list:
             if obj.__class__.__name__ == "Spawn":
-                print obj.active
                 obj.active = True
-                print obj.active
-            else:
-                print "debug please"
-
-        """for spawner in self.spawners:
-            spawner.activate()
-            print "Activated spawner:" + str(spawner) + " " + str(spawner.active)
-            print"""
 
     def deactivate_spawners(self):
-        for spawner in self.spawners:
-            spawner.deactivate()
+        """Deactivates spawners, mimicking the activate_spawners behavior"""
+
+        for obj in config.Object_list:
+            if obj.__class__.__name__ == "Spawn":
+                obj.deactivate()
 
     def get_spawners(self):
-        temp_spawner_table = []
-        for spawner in self.spawners:
-            print spawner
-            spawner_lookup = spawner.get_spawner_attr()
-            #temp_spawner_table.append(spawner_lookup)
-        print "This is the spawner_lookup from get_spawners: " + \
-        str(spawner_lookup)
-        print
+        """custom debug function for getting the spawner attributes, links with
+        the get_spawner_attr() function in the Spawn class"""
+
+        for obj in config.Object_list:
+            if obj.__class__.__name__ == "Spawn":
+                obj.get_spawner_attr()
 
     def set_misc_elements(self):
-        # this will need to be filled out if we have any misc items that need special treatment
+        """this will need to be filled out if we have any misc
+        items that need special treatment"""
         pass
 
 class Event():
@@ -268,26 +257,6 @@ class Event():
             elif event.type == config.pygame.MOUSEBUTTONDOWN:
                 mousex, mousey = event.pos
                 return event
-            elif event.type == config.pygame.KEYDOWN and \
-            event.key == config.pygame.K_o:
-                config.helpers.new_game()
-                return event
-            elif event.type == config.pygame.KEYDOWN and \
-            event.key == config.pygame.K_p:
-                print
-                print "The object list is: " + str(config.Object_list)
-                print
-                print "Peon list is: " + str(config.Peon_list)
-            elif event.type == config.pygame.KEYDOWN and \
-            event.key == config.pygame.K_l:
-                for obj in config.Object_list:
-                    print str(obj) + " " + str(obj.active)
-            elif event.type == config.pygame.KEYDOWN and \
-            event.key == config.pygame.K_a:
-                for obj in config.Object_list:
-                    obj.active = True
-            else:
-                return None
 
 class GUI_OBJECT(pygame.sprite.Sprite):
     """GUI class template for graphic objects for the interface and then

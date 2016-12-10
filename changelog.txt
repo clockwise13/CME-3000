@@ -151,3 +151,34 @@ Issue analysis:
 - it looks as if the activate_spawners() method doesn't work, while a simple external for loop assigning the
 self.active attribute does the job
 - TO DO: compare the way activate_spawners() works through debug logs vs. the for loop done in external fashion
+
+##############################################################################
+
+Commit nr 13 to the branch level-loader
+
+Fixed the activate_spawners() method to actually change the  active flag in the
+spawners. Important note: to do so, I had to make the method reference an
+external module holding the class instances - in this case: config.Object_list.
+This is because the actual class instance we want to manipulate lives as a
+member of the Sprite group in config.Object_list. Changing the self.spawners
+active flag, even though intuitively correct, changes nothing in the instance
+living in the config module. This will likely translate to behaviors of other
+classes and methods as well, especially the deactivate method for spawners.
+
+###############################################################################
+
+Commit nr 14 to the branch level-loader
+
+- Aligned the rest of the methods in the Level_creator class with the
+activate_spawners() method
+- Code housecleaning: cleaned debug print statements from the code
+- Recoded the get_spawner_attr() mehtod in Spawn class and the
+get_spawners() method in Level_creator class for a cleaner output
+- Code housecleaning: erased the key input handling from Event class
+- Made Peon.direction attribute a random binary choice (left, right)
+- added a get_peons() function description in the helpers module for no clear
+reason
+- added a empty() call to the GUI_list group in new_game(), so we don't have
+menu button rects messing up the interaction in a level
+- Code housekeeping: moved the pygame.mixer.init() to the config module inits
+- File housekeeping: removed .pyc files, deleted the dummy_testing template

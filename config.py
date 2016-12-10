@@ -8,7 +8,6 @@ import random
 import cPickle
 import classes
 import helpers
-import traceback
 
 from pygame.locals import *
 from helpers import *
@@ -35,3 +34,4 @@ dummy_counter = 0
 # INITS
 
 pygame.init()
+pygame.mixer.init()

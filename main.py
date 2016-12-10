@@ -20,8 +20,6 @@ def main():
     # create the main Surface
     EKRAN = helpers.displayer()
 
-    #spawner = classes.Spawn("Peon", (config.res_x/1.8, config.res_y/3.2), 50, 50)
-
     # create a Clock instance for updates and FPS management
     fpsClock = pygame.time.Clock()
     FPS = 60
@@ -29,7 +27,6 @@ def main():
     # create I/O handler
 
     EventHandler = config.classes.Event()
-    pygame.mixer.init() # initialize the mixer
 
     # draw menu buttons for "New Game" and "Quit"
     # moved this outside of the main loop to avoid drawing over the levels
@@ -54,7 +51,7 @@ def main():
         the code of main."""
 
         # finalise the loop
-        #Object_list.update()
+        Object_list.update()
         GUI_list.update()
         GUI_list.draw(EKRAN)
         Peon_list.update()

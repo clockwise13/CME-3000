@@ -32,6 +32,7 @@ def new_game():
 def collider(test_subject):
     # uses the default pygame Sprite collision method
     collisions_list = pygame.sprite.spritecollide(test_subject, config.Peon_list, True)
+    print collisions_list
 
 def get_peons():
     # get's the list of Peons and prints it out to the interpreter

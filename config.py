@@ -8,6 +8,7 @@ import random
 import cPickle
 import classes
 import helpers
+import numpy
 
 from pygame.locals import *
 from helpers import *
@@ -20,6 +21,10 @@ res_y = 720
 BLACK    = (0, 0, 0)
 WHITE    = (255, 255, 255)
 BLUE     = (0, 0, 255)
+
+# image sizes, format: (height, width)
+
+wall_size = (70, 70)
 
 #containers for sprite objects using the sprite.Group() class
 Peon_list = pygame.sprite.Group()

@@ -182,3 +182,22 @@ reason
 menu button rects messing up the interaction in a level
 - Code housekeeping: moved the pygame.mixer.init() to the config module inits
 - File housekeeping: removed .pyc files, deleted the dummy_testing template
+
+##############################################################################
+
+Commit nr 15 - importing the physics_collider branch into a new, more up to date
+"physics" branch
+
+1. Created physics_test.py file: no GUI buttons; reinstated the testing behavior
+ of the random Spawner.
+3. Goal: create a simple "if collide with X - change direction" mechanic for the
+Peons. Sub-goal: Peons shoud bounce off of static objects, like scenery. The
+scenery elements should stay in place.
+4. Added some a handy wall_size variable in config to play around with walls.
+5. Added some code in physics_test.py to create wall arrays covering the sides
+of the screen. These can be used for collision / physics testing. A for() loop
+is introduced to automate the wall array creation.
+6. The Enviroment_Wall class is now ready to be used for collision testing. The
+important thing is to use the self.mass attribute for collision calcs.
+7. Self.mass attribute added to Peon class.
+8. Now to get some of that good old Newton on on on on.

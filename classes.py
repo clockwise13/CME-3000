@@ -19,6 +19,10 @@ class Peon(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
 
+        # Mass attribute for physics
+
+        self.mass = 10
+
         #Speed vectors
         self.change_x = 0
         self.change_y = 0
@@ -313,3 +317,22 @@ class GUI_BUTTON(pygame.sprite.Sprite):
             self.function()
         else:
             pass
+
+class Enviroment_Wall(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Enviroment_Wall, self).__init__()
+        self.pos = (None, None) # pos to be updated through class methods
+        self.image = config.pygame.image.load(config.os.path.join(os.getcwd() +\
+        "/Resources/Walls/" + "metal.png"))
+        self.rect = self.image.get_rect()
+        self.add(config.Object_list)
+        self.mass = 101 # this makes the object to massive to be moved
+
+    def set_pos(self, pos_tuple):
+        # use this method to set the pos for the object
+        self.pos = pos_tuple
+        self.rect.center = self.pos
+        print self.pos
+
+    def update(self):
+        pass

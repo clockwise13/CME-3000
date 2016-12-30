@@ -201,3 +201,18 @@ is introduced to automate the wall array creation.
 important thing is to use the self.mass attribute for collision calcs.
 7. Self.mass attribute added to Peon class.
 8. Now to get some of that good old Newton on on on on.
+
+
+##############################################################################
+
+Commit nr 16 - physics branch
+
+1. Changed the Spawner class definition. Now Spawners are being added both to
+the Object_list and to the Spawner_list - this is to have a safe option for
+wokring with the Spawner objects, which need not be drawn, moved etc.
+2. Added the respective group: Spawner_list to the config file.
+3. Changed physics_test.py to be more in line with main.py by removing the draw
+call for the Object_list group.
+4. Added Enviro_list as a group in config.py and switched the group that all
+Environment_Wall objects are assigned to. Added a draw call to that one in the
+physics_test.py file.

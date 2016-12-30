@@ -133,6 +133,7 @@ class Spawn(pygame.sprite.Sprite):
 
         # make the spawner a member of the sprite group in config
         self.add(config.Object_list)
+        self.add(config.Spawner_list)
 
     def activate(self):
         # turn spawner on
@@ -318,14 +319,14 @@ class GUI_BUTTON(pygame.sprite.Sprite):
         else:
             pass
 
-class Enviroment_Wall(pygame.sprite.Sprite):
+class Environment_Wall(pygame.sprite.Sprite):
     def __init__(self):
-        super(Enviroment_Wall, self).__init__()
+        super(Environment_Wall, self).__init__()
         self.pos = (None, None) # pos to be updated through class methods
         self.image = config.pygame.image.load(config.os.path.join(os.getcwd() +\
         "/Resources/Walls/" + "metal.png"))
         self.rect = self.image.get_rect()
-        self.add(config.Object_list)
+        self.add(config.Enviro_list)
         self.mass = 101 # this makes the object to massive to be moved
 
     def set_pos(self, pos_tuple):

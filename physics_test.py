@@ -28,14 +28,12 @@ def main():
         the screen. With a bit of work this could provie a basic and rather
         unsexy wall array generator. Good for testing tho."""
 
-        wall = classes.Enviroment_Wall()
+        wall = classes.Environment_Wall()
         posx = 0
         posy = config.res_y - config.wall_size[1] * n
         wall.set_pos((posx, posy))
         wall_array_list.append(wall)
 
-    #Wall1 = classes.Enviroment_Wall()
-    #Wall1.set_pos((config.res_x/2, config.res_y/2))
     spawner = classes.Spawn("Peon", (config.res_x/1.5, config.res_y/3), 50, 50)
     spawner.activate()
 
@@ -68,10 +66,10 @@ def main():
             config.helpers.collider(obj)
 
         # finalise the loop
+        Enviro_list.draw(EKRAN)
         Peon_list.update()
         Peon_list.draw(EKRAN)
         Object_list.update()
-        Object_list.draw(EKRAN)
         Spawner_list.update()
         GUI_list.update()
         GUI_list.draw(EKRAN)

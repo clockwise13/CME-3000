@@ -30,6 +30,8 @@ wall_size = (70, 70)
 Peon_list = pygame.sprite.Group()
 Head_list = pygame.sprite.Group()
 Object_list = pygame.sprite.Group() # only call update() on this one!
+Spawner_list = pygame.sprite.Group()
+Enviro_list = pygame.sprite.Group()
 GUI_list = pygame.sprite.Group()
 
 # dummy counter for dummy counting

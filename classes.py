@@ -132,7 +132,6 @@ class Spawn(pygame.sprite.Sprite):
         self.active = False
 
         # make the spawner a member of the sprite group in config
-        self.add(config.Object_list)
         self.add(config.Spawner_list)
 
     def activate(self):

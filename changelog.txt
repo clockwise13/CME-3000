@@ -216,3 +216,24 @@ call for the Object_list group.
 4. Added Enviro_list as a group in config.py and switched the group that all
 Environment_Wall objects are assigned to. Added a draw call to that one in the
 physics_test.py file.
+
+###############################################################################
+
+Commit nr 17 - physics branch
+
+1. Removed Spawners from the Object_list; they are still part of the
+Spawner_list. This is to allow for calling the collider function on all objects
+in the Object_list with one call instead of looping through some temp lists.
+2. Changed the collision to work on Enviro_list objects vs. Peon_list. Note:
+this is pretty lousy.
+3. Plan: introduce the collision check as two-phase: (1) Check for collisions
+between all objects present on the canvas; (2) delegate any behavior changes
+to the classes themselves. 
+
+###############################################################################
+
+Commit nr 18 -physics branch
+
+1. Built a simple collision check between Enviro_list (walls basically) and
+the Peon_list. The Peon_list element is hardcoded in the helpers file, which
+is subject to change. The function prints the object tha collided with a wall.

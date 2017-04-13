@@ -59,7 +59,7 @@ def main():
         pickled once as a special level instance and loaded on boot to slim down
         the code of main."""
 
-        for obj in wall_array_list:
+        for obj in Enviro_list:
             """this loop is waaaaaaaaaaaaay inefficient; collider should work
             on the Object_list or smth simillar check between the collisions_list
             there"""

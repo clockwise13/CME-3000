@@ -228,7 +228,7 @@ in the Object_list with one call instead of looping through some temp lists.
 this is pretty lousy.
 3. Plan: introduce the collision check as two-phase: (1) Check for collisions
 between all objects present on the canvas; (2) delegate any behavior changes
-to the classes themselves. 
+to the classes themselves.
 
 ###############################################################################
 
@@ -237,3 +237,21 @@ Commit nr 18 -physics branch
 1. Built a simple collision check between Enviro_list (walls basically) and
 the Peon_list. The Peon_list element is hardcoded in the helpers file, which
 is subject to change. The function prints the object tha collided with a wall.
+
+###############################################################################
+
+Commit nr 19 -physics branch - Group collision checks!
+
+1. Added walls to the Object_list in the Environment_Wall class definition for
+working with collision check.
+2. Started defining the collision check mechanic in the Event class definition.
+The rationale for this is: we can treat collisions as a defined event type and
+use the Event class as the handler of these events. The core calculations and
+logic deciding what happens after the collision can be delegated to helper
+functions for readability.
+3. Using groupcollide() method of the pygame.sprite class, added two collision
+checks that act on Peon_list X Enviro_list and Peon_list X Head_list, producing
+peon_enviro_collisions and peon_head_collisions - two dicts that will pair the
+collided objects.
+4. Next up: making the peons change direction after a colliding event with a
+wall.

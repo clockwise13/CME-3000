@@ -262,6 +262,24 @@ class Event():
                 mousex, mousey = event.pos
                 return event
 
+    def get_collisions(self):
+        """Checks the Object_list for collisions between objects, returns a list
+        of tuples of colliding objects"""
+
+        # Peon_list x Enviro_list --> returns dict
+
+        peon_enviro_collisions = pygame.sprite.groupcollide(config.Peon_list,\
+        config.Enviro_list, False, False)
+        return peon_enviro_collisions
+
+        # Peon_list x Head_list --> returns dict
+
+        peon_head_collisions = pygame.sprite.groupcollide(config.Peon_list,\
+        config.Head_list, False, False)
+        return peon_head_collisions
+
+
+
 class GUI_OBJECT(pygame.sprite.Sprite):
     """GUI class template for graphic objects for the interface and then
     specify the details for every group (buttons, sliders, meters etc.)
@@ -325,8 +343,9 @@ class Environment_Wall(pygame.sprite.Sprite):
         self.image = config.pygame.image.load(config.os.path.join(os.getcwd() +\
         "/Resources/Walls/" + "metal.png"))
         self.rect = self.image.get_rect()
-        self.add(config.Enviro_list)
         self.mass = 101 # this makes the object to massive to be moved
+        self.add(config.Enviro_list)
+        self.add(config.Object_list)
 
     def set_pos(self, pos_tuple):
         # use this method to set the pos for the object

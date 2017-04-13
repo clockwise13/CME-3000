@@ -54,16 +54,17 @@ def main():
 
         # retrieve events - IMPORTANT: main I/O output, don't add other handlers
         EventHandler.get_events()
+        EventHandler.get_collisions()
 
         """This is the 'main menu' part of the main module code. It can be
         pickled once as a special level instance and loaded on boot to slim down
         the code of main."""
 
-        for obj in Enviro_list:
-            """this loop is waaaaaaaaaaaaay inefficient; collider should work
-            on the Object_list or smth simillar check between the collisions_list
-            there"""
-            config.helpers.collider(obj)
+        """for obj in Enviro_list:
+            #this loop is waaaaaaaaaaaaay inefficient; collider should work
+            #on the Object_list or smth simillar check between the collisions_list
+            #there
+            config.helpers.collider(obj)"""
 
         # finalise the loop
         Enviro_list.draw(EKRAN)

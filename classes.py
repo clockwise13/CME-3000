@@ -19,13 +19,8 @@ class Peon(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
 
-        # Mass attribute for physics
-
-        self.mass = 10
-
         #Speed vectors
-        self.change_x = 0
-        self.change_y = 0
+        self.vector = [0,0] # 2-D vector for movement and collision calcs
 
         #Right and left facing walking frames
         self.walking_frames_l = []
@@ -56,6 +51,10 @@ class Peon(pygame.sprite.Sprite):
         self.image = self.walking_frames_r[0]
         self.rect = self.image.get_rect()
 
+        # get timestamp of the initialization of a given Peon instance
+
+        self.time = config.time.time()
+
 
         # add instance of Peon object to Peon_list Sprite group
         self.add(config.Peon_list)
@@ -64,7 +63,11 @@ class Peon(pygame.sprite.Sprite):
 
     def update(self):
         #Move left and right
-        self.rect.x += self.change_x
+        self.rect.center = (self.rect.center[0] + self.vector[0], \
+        self.rect.center[1] + self.vector[1])
+
+        self.random_silly_walk()
+
         pos = self.rect.x
         if self.direction == "R":
             frame = (pos // 30) % len(self.walking_frames_r)
@@ -73,17 +76,43 @@ class Peon(pygame.sprite.Sprite):
             frame = (pos // 30) % len(self.walking_frames_l)
             self.image = self.walking_frames_l[frame]
 
+
+    def random_silly_walk(self):
+        # randomized stop-and-walk behavior
+        update_time = config.time.time()
+        delta_time_floor = int(update_time - self.time)
+
+        if delta_time_floor > 0 and delta_time_floor % 9 == 0:
+            walk_or_go = config.random.randrange(1,5)
+            #print "Timestamp: " + str(delta_time_floor)
+            #print "Decision: " + str(walk_or_go)
+            #print
+
+            if walk_or_go == 1:
+                self.direction = "L"
+                self.go_left()
+            elif walk_or_go == 2:
+                self.direction = "R"
+                self.go_right()
+            elif walk_or_go == 3:
+                self.stop()
+            else:
+                pass
+        else:
+            pass
+
+
         #Moving controlled by player
     def go_left(self):
-            self.change_x = -6
+            self.vector[0] = -2
             self.direction = "L"
 
     def go_right(self):
-            self.change_x = 6
+            self.vector[0] = 2
             self.direction = "R"
 
     def stop(self):
-            self.change_x = 0
+            self.vector = [0,0]
 
 class Head(pygame.sprite.Sprite):
     def __init__(self):
@@ -263,8 +292,8 @@ class Event():
                 return event
 
     def get_collisions(self):
-        """Checks the Object_list for collisions between objects, returns a list
-        of tuples of colliding objects"""
+        """Checks for collisions between objects' lists pairwise, returns a dict
+        of colliding objects"""
 
         # Peon_list x Enviro_list --> returns dict
 

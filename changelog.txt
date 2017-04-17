@@ -255,3 +255,24 @@ peon_enviro_collisions and peon_head_collisions - two dicts that will pair the
 collided objects.
 4. Next up: making the peons change direction after a colliding event with a
 wall.
+
+###############################################################################
+
+Commit nr 20 -physics branch - mirror-bounce
+
+1. Add self.vector property to Peon class as a 2-D vector (basiaclly a 2-tuple).
+2. Rewrite the update() methon in Peon to work with self.vector.
+3. Remove mass attribute from Peon clas. We can do massless physics. Photon
+physics basically.
+4. Added some randomized behavior to the Peon class, to make it randomly change
+direction or stop.
+
+###############################################################################
+
+Commit nr 21 -physics branch - mirror-bounce ctd.
+
+1. TO DO: for every instance of the Peon class found in the relevant collision
+dict, have their self.vector[0] element be multiplied by -1 to make them change
+direction without speed.
+2. TO DO: play aroung with slightly diminishing the speed of the Peon after a
+collision.

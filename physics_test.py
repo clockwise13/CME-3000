@@ -55,7 +55,8 @@ def main():
         # retrieve events - IMPORTANT: main I/O output, don't add other handlers
         EventHandler.get_events()
         EventHandler.get_collisions()
-
+        EventHandler.get_time_delta()
+        
         """This is the 'main menu' part of the main module code. It can be
         pickled once as a special level instance and loaded on boot to slim down
         the code of main."""

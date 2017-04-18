@@ -271,6 +271,7 @@ class Event():
         mousex = 0 # x coordinate of the mouse event
         mousey = 0 # y coordinate of the mouse event
         self.event = []
+        self.init_time = config.time.time()
 
     def get_events(self):
         event_list = config.pygame.event.get()
@@ -290,6 +291,17 @@ class Event():
             elif event.type == config.pygame.MOUSEBUTTONDOWN:
                 mousex, mousey = event.pos
                 return event
+
+    def get_time_delta(self):
+        current_time = config.time.time()
+        delta_time = int(config.time.time() - self.init_time)
+        self.check_time_cycles(delta_time)
+
+    def check_time_cycles(self, delta):
+        if delta > 0 and delta % 9 == 0:
+            print "ping! " + str(delta % 9)
+        else:
+            pass
 
     def get_collisions(self):
         """Checks for collisions between objects' lists pairwise, returns a dict

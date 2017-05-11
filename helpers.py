@@ -34,6 +34,10 @@ def collider(test_subject):
     collisions_list = pygame.sprite.spritecollide(test_subject, config.Peon_list, True)
     print collisions_list
 
+def delta_timer(obj):
+    delta_time = config.time.time() - obj.time
+    return delta_time
+
 def get_peons():
     # get's the list of Peons and prints it out to the interpreter
     for p in config.Peon_list:

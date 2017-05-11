@@ -274,5 +274,15 @@ Commit nr 21 -physics branch - mirror-bounce ctd.
 1. TO DO: for every instance of the Peon class found in the relevant collision
 dict, have their self.vector[0] element be multiplied by -1 to make them change
 direction without speed.
-2. TO DO: play aroung with slightly diminishing the speed of the Peon after a
+2. TO DO: play around with slightly diminishing the speed of the Peon after a
+collision.
+
+###############################################################################
+
+Commit nr 22 - physics branch - mirror-bounce ctd.
+
+1. COMPLETED: for every instance of the Peon class found in the relevant collision
+dict their self.vector[0] element is multiplied by -1 to make them change
+direction without speed.
+2. TO DO: play around with slightly diminishing the speed of the Peon after a
 collision.

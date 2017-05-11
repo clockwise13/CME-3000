@@ -271,7 +271,10 @@ class Event():
         mousex = 0 # x coordinate of the mouse event
         mousey = 0 # y coordinate of the mouse event
         self.event = []
-        self.init_time = config.time.time()
+        self.time = config.time.time() # init timestamp
+        self.peon_enviro_collisions = [] # empty list for collider
+        self.peon_head_collisions = [] # empty list for collider
+
 
     def get_events(self):
         event_list = config.pygame.event.get()
@@ -292,16 +295,16 @@ class Event():
                 mousex, mousey = event.pos
                 return event
 
-    def get_time_delta(self):
-        current_time = config.time.time()
-        delta_time = int(config.time.time() - self.init_time)
-        self.check_time_cycles(delta_time)
+    def get_delta(self):
+        delta = config.helpers.delta_timer(self)
+        self.check_time_cycles(delta)
 
     def check_time_cycles(self, delta):
         if delta > 0 and delta % 9 == 0:
             print "ping! " + str(delta % 9)
         else:
-            pass
+            print delta % 9
+
 
     def get_collisions(self):
         """Checks for collisions between objects' lists pairwise, returns a dict
@@ -309,15 +312,22 @@ class Event():
 
         # Peon_list x Enviro_list --> returns dict
 
-        peon_enviro_collisions = pygame.sprite.groupcollide(config.Peon_list,\
+        self.peon_enviro_collisions = pygame.sprite.groupcollide(config.Peon_list,\
         config.Enviro_list, False, False)
-        return peon_enviro_collisions
 
         # Peon_list x Head_list --> returns dict
 
-        peon_head_collisions = pygame.sprite.groupcollide(config.Peon_list,\
+        self.peon_head_collisions = pygame.sprite.groupcollide(config.Peon_list,\
         config.Head_list, False, False)
-        return peon_head_collisions
+
+
+    def process_collisions(self):
+        try:
+            for p in self.peon_enviro_collisions:
+                p.vector[0] = p.vector[0] * -1
+        except:
+            print "The process_collisions method in Event failed"
+
 
 
 

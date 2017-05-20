@@ -286,3 +286,18 @@ dict their self.vector[0] element is multiplied by -1 to make them change
 direction without speed.
 2. TO DO: play around with slightly diminishing the speed of the Peon after a
 collision.
+
+###############################################################################
+
+Commit nr 23 - master branch - updates, cleanups and realignment
+
+1. Changed the Level_creator class to activate the spawners by scanning
+config.Spawner_list and sidestepping checking the type of object (i.e.
+is it a Spawn-class object) for activation/deactivation of spawners.
+2.Added a call to Spawner_list.update() to the calls in the main loop in
+main.py.
+3. Added the wall array construction loop to main.py for collisions.
+4. Added calls to the collision getter and the collision processor in
+in the Event class to the main loop.
+5. Added the .idea folder to .gitignore so we don't overwrite each others
+PyCharm settings.

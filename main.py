@@ -37,6 +37,24 @@ def main():
     QuitButton = config.classes.GUI_BUTTON("happy_baton.png", \
     (config.res_x/2+150, config.res_y/2+75), config.helpers.quitter, EventHandler, 279, 274)
 
+    # draw walls - MOVE TO a class def or helper def
+
+    wall_array_x = config.res_x / config.wall_size[0]
+    wall_array_y = config.res_y / config.wall_size[1]
+    wall_array_list = []
+
+    for n in range(1, wall_array_y):
+        """This for loop creates n-number of wall objects to cover the sides of
+        the screen. With a bit of work this could provie a basic and rather
+        unsexy wall array generator. Good for testing tho."""
+
+        wall = classes.Environment_Wall()
+        posx = 0
+        posy = config.res_y - config.wall_size[1] * n
+        wall.set_pos((posx, posy))
+        wall_array_list.append(wall)
+
+
     # main loop
     while quit_flag == False:
 
@@ -46,16 +64,19 @@ def main():
         # retrieve events - IMPORTANT: main I/O output, don't add other handlers
         EventHandler.get_events()
 
-        """This is the 'main menu' part of the main module code. It can be
-        pickled once as a special level instance and loaded on boot to slim down
-        the code of main."""
+        #retrieve collisions and process them
+        EventHandler.get_collisions()
+        EventHandler.process_collisions()
+        EventHandler.get_delta()
 
         # finalise the loop
         Object_list.update()
         GUI_list.update()
+        Enviro_list.draw(EKRAN)
         GUI_list.draw(EKRAN)
         Peon_list.update()
         Peon_list.draw(EKRAN)
+        Spawner_list.update()
         fpsClock.tick(FPS)
         pygame.display.flip()
 

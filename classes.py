@@ -241,16 +241,15 @@ class Level_creator():
         made via loop, since the spwaners-as-members-of-a-group live in the
         config module's namespace."""
 
-        for obj in config.Object_list:
-            if obj.__class__.__name__ == "Spawn":
-                obj.active = True
+        for obj in config.Spawner_list:
+            obj.activate()
+            #obj.active = True
 
     def deactivate_spawners(self):
         """Deactivates spawners, mimicking the activate_spawners behavior"""
 
-        for obj in config.Object_list:
-            if obj.__class__.__name__ == "Spawn":
-                obj.deactivate()
+        for obj in config.Spawner_list:
+            obj.deactivate()
 
     def get_spawners(self):
         """custom debug function for getting the spawner attributes, links with
